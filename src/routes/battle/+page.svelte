@@ -1,8 +1,8 @@
 <script lang="ts">
-  import LocalStorageTest from "$lib/components/LocalStorageTest.svelte";
+  import GameBoard from "$lib/components/GameBoard.svelte";
 </script>
 
 <div>
   Бой
-  <LocalStorageTest></LocalStorageTest>
+  <GameBoard></GameBoard>
 </div>

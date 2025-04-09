@@ -5,7 +5,7 @@ interface Entity {
   id: number;
   name: string;
   type: 'player' | 'enemy' | 'building';
-  position: { x: number; y: number };
+  hp: number;
 }
 
 export interface Player extends Entity {
@@ -18,6 +18,7 @@ export interface Enemy extends Entity {
 
 export interface Building {
   type: string;
+  hp: number;
 }
 
 export interface Cell {
@@ -59,12 +60,12 @@ export const playerStore = localStorageStore<Player>("player", {
   id: 1,
   name: "player",
   type: "player",
-  position: { x: 0, y: 0 },
+  hp: 100,
 });
 
 export const enemiesStore = localStorageStore<Enemy[]>("enemies", []);
 
-export const gameBoardStore = localStorageStore<GameBoard>('gameBoard', {
+export const initialGameBoard: GameBoard = {
   width: 7,
   height: 5,
   cells: Array(5)
@@ -74,4 +75,17 @@ export const gameBoardStore = localStorageStore<GameBoard>('gameBoard', {
         .fill(null)
         .map((_, x) => ({ x, y, content: 'empty' }))
     ),
-});
+};
+
+initialGameBoard.cells[2][0].content = "player";
+initialGameBoard.cells[2][0].entity = {
+  id: 1,
+  name: "player",
+  type: "player",
+  hp: 100,
+};
+
+export const gameBoardStore = localStorageStore<GameBoard>(
+  "gameBoard",
+  initialGameBoard
+);
