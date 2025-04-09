@@ -1,8 +1,8 @@
 <script lang="ts">
-    import PlayerTest from "$lib/components/PlayerTest.svelte";
+  import LocalStorageTest from "$lib/components/LocalStorageTest.svelte";
 </script>
 
 <div>
-    Бой
-    <PlayerTest></PlayerTest>
+  Бой
+  <LocalStorageTest></LocalStorageTest>
 </div>
