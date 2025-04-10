@@ -56,7 +56,7 @@ function localStorageStore<T>(key: string, initialValue: T) {
 
 export const playerStore = localStorageStore<Player>("player", {
   id: 1,
-  name: "player",
+  name: "Игрок",
   type: "player",
   hp: 100,
 });
@@ -78,7 +78,7 @@ export const initialGameBoard: GameBoard = {
 initialGameBoard.cells[2][0].content = "player";
 initialGameBoard.cells[2][0].entity = {
   id: 1,
-  name: "player",
+  name: "Игрок",
   type: "player",
   hp: 100,
 };

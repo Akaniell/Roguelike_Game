@@ -1,15 +1,14 @@
 <script lang="ts">
-  export let cell;
+  import type { Cell, Player, Enemy, Building } from "$lib/Stores/localstorage";
+
+  export let cell: Cell;
   export let onClick;
+  export let entity: Player | Enemy | Building | null = null;
 </script>
 
 <button class="cell" on:click={() => onClick(cell)}>
-  {#if cell.content === "player"}
-    Игрок
-  {:else if cell.content === "enemy"}
-    Враг
-  {:else if cell.content === "building"}
-    Здание
+  {#if entity}
+    {entity.name}
   {:else}
     Пусто
   {/if}
