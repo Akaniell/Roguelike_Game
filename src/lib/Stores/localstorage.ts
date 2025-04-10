@@ -16,9 +16,7 @@ export interface Enemy extends Entity {
 
 }
 
-export interface Building {
-  type: string;
-  hp: number;
+export interface Building extends Entity {
 }
 
 export interface Cell {

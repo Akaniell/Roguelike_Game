@@ -16,6 +16,7 @@
 
   let selectedCell: Cell | null = null;
   let activeAction: string | null = null;
+  let firstCell: Cell | null = null;
 
   function handleCellClick(cell: Cell) {
     if (activeAction) {

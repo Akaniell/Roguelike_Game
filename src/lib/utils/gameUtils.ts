@@ -70,47 +70,104 @@ export function movePlayerToBoard(player: Player, x: number, y: number) {
 export function applyDamageToCell(x: number, y: number, damage: number) {
   gameBoardStore.update((board) => {
     const cell = board.cells[y][x];
-    console.log(`${cell.x},${cell.y},${cell.entity?.type}`)
+
     if (cell.entity && cell.entity.hp > 0) {
-      cell.entity.hp -= damage;
-      if (cell.entity.hp <= 0) {
-        cell.content = "empty";
-        cell.entity = undefined;
+      switch (cell.entity.type) {
+        case "player":
+          playerStore.update((player) => {
+            if (player) {
+              player.hp -= damage;
+              if (cell.entity) cell.entity.hp = player.hp; 
+              if (player.hp <= 0) {
+                console.log(`Игрок на клетке (${x}, ${y}) был повержен!`);
+                cell.content = "empty";
+                cell.entity = undefined;
+              }
+            }
+            return { ...player };
+          });
+          break;
+
+        case "enemy":
+          enemiesStore.update((enemies) => {
+            return enemies.map((enemy) => {
+              if (enemy.id === cell.entity?.id) {
+                enemy.hp -= damage;
+                cell.entity.hp = enemy.hp; 
+
+                if (enemy.hp <= 0) {
+                  console.log(
+                    `Враг (${enemy.name}) на клетке (${x}, ${y}) был повержен!`
+                  );
+                  cell.content = "empty";
+                  cell.entity = undefined;
+                }
+                return { ...enemy };
+              }
+              return enemy;
+            });
+          });
+          break;
+
+        default:
+          console.log(
+            `Неизвестный тип сущности (${cell.entity.type}) на клетке (${x}, ${y}).`
+          );
       }
-      if (cell.entity?.type === "player") {
-        playerStore.update((player) => {
-          if (player) {
-            player.hp = cell.entity?.hp as number;
-          }
-          return player;
-        });
+      console.log(
+        `Сущности (${cell.entity.name}) на клетке (${x}, ${y}) нанесен урон. HP: ${cell.entity.hp}`
+      );
     } else {
       console.log(`В клетке (${x}, ${y}) нет сущности для нанесения урона.`);
     }
-  }
-  return board;});
+
+    return board;
+  });
 }
 
 export function applyHealToCell(x: number, y: number, heal: number) {
   gameBoardStore.update((board) => {
     const cell = board.cells[y][x];
-    console.log(`${cell.x},${cell.y},${cell.entity?.type}`)
+
     if (cell.entity && cell.entity.hp > 0) {
-      cell.entity.hp += heal;
-      if (cell.entity.hp <= 0) {
-        cell.content = "empty";
-        cell.entity = undefined;
+      switch (cell.entity.type) {
+        case "player":
+          playerStore.update((player) => {
+            if (player) {
+              player.hp += heal;
+              if (cell.entity) cell.entity.hp = player.hp;
+            }
+            return { ...player };
+          });
+          break;
+
+        case "enemy":
+          enemiesStore.update((enemies) => {
+            return enemies.map((enemy) => {
+              if (enemy.id === cell.entity?.id) {
+                enemy.hp += heal;
+                cell.entity.hp = enemy.hp;
+                return { ...enemy };
+              }
+              return enemy;
+            });
+          });
+          break;
+
+        default:
+          console.log(
+            `Неизвестный тип сущности (${cell.entity.type}) на клетке (${x}, ${y}).`
+          );
       }
-      if (cell.entity?.type === "player") {
-        playerStore.update((player) => {
-          if (player) {
-            player.hp = cell.entity?.hp as number;
-          }
-          return player;
-        });
+      console.log(
+        `Сущности (${cell.entity.name}) на клетке (${x}, ${y}) восстановлено здоровье. HP: ${cell.entity.hp}`
+      );
     } else {
-      console.log(`В клетке (${x}, ${y}) нет сущности для восстановления хп.`);
+      console.log(
+        `В клетке (${x}, ${y}) нет сущности для восстановления здоровья.`
+      );
     }
-  }
-  return board;});
+
+    return board;
+  });
 }
