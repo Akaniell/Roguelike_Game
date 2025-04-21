@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { gameBoardStore } from "$lib/Stores/localstorage";
+  import { gameBoardStore } from "$lib/Stores/gameBoardStore";
+
   import { addEnemy, placeEntityOnBoard } from "$lib/utils/gameUtils";
   import { onMount } from "svelte";
 
@@ -61,7 +62,7 @@
 </div>
 
 <style>
-      div {
+  div {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
@@ -81,7 +82,7 @@
   }
 
   button {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     padding: 10px 15px;
     border: none;

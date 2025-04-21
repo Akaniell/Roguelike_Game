@@ -1,11 +1,7 @@
-import {
-  playerStore,
-  enemiesStore,
-  gameBoardStore,
-  type Building,
-  type Enemy,
-  type Player,
-} from "$lib/Stores/localstorage";
+import { enemiesStore } from "$lib/Stores/enemiesStore";
+import { gameBoardStore } from "$lib/Stores/gameBoardStore";
+import { playerStore } from "$lib/Stores/playerStore";
+import type { Building, Enemy, Player } from "$lib/Stores/types";
 
 export function addEnemy(name: string, hp: number) {
   let type = "enemy" as "player" | "enemy" | "building";

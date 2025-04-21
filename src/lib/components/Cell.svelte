@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Cell } from "$lib/Stores/localstorage";
+  import type { Cell } from "$lib/Stores/types";
   import { getEntityInfo } from "$lib/utils/gameUtils";
 
   export let cell: Cell;

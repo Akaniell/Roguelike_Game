@@ -1,19 +1,15 @@
 <script lang="ts">
   import {
-    gameBoardStore,
-    playerStore,
-    type GameBoard,
-    type Player,
-    type Cell,
-  } from "$lib/Stores/localstorage";
-  import {
     handleCellAction,
     swapEntities,
     movePlayerToBoard,
-    getEntityInfo, // Импортируем getEntityInfo
+    getEntityInfo,
   } from "$lib/utils/gameUtils";
   import { onMount } from "svelte";
   import CellComponent from "./Cell.svelte";
+  import type { Cell, GameBoard, Player } from "$lib/Stores/types";
+  import { gameBoardStore } from "$lib/Stores/gameBoardStore";
+  import { playerStore } from "$lib/Stores/playerStore";
 
   let gameBoard: GameBoard;
   let player: Player;
@@ -48,7 +44,6 @@
   {#each gameBoard.cells as row (row[0].y)}
     <div class="row">
       {#each row as cell (cell.x)}
-        <!-- Используем CellComponent вместо Cell -->
         <CellComponent {cell} onClick={handleCellClick} />
       {/each}
     </div>
