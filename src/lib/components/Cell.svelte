@@ -30,8 +30,8 @@
 
   function handleMouseMove(event: MouseEvent) {
     tooltipPosition = {
-      top: event.clientY + 15, // смещение по вертикали от курсора
-      left: event.clientX + 15, // смещение по горизонтали от курсора
+      top: event.clientY + 15,
+      left: event.clientX + 15,
     };
   }
 
