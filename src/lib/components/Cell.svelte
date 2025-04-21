@@ -1,14 +1,12 @@
 <script lang="ts">
   import Tooltip from "./Tooltip.svelte";
   import type { Cell } from "$lib/Stores/types";
-  import { onMount } from "svelte";
 
   export let cell: Cell;
   export let onClick: (cell: Cell) => void;
 
   let showTooltip = false;
   let tooltipPosition = { top: 0, left: 0 };
-  let cellElement: HTMLElement;
 
   const typeNames: Record<string, string> = {
     player: "Игрок",
@@ -19,47 +17,39 @@
 
   $: tooltipContent = `
     <div><strong>Тип:</strong> ${typeNames[cell.content] || cell.content}</div>
-    ${cell.entity ? `
+    ${
+      cell.entity
+        ? `
       <div><strong>Имя:</strong> ${cell.entity.name}</div>
       <div><strong>HP:</strong> ${cell.entity.hp}</div>
-      ${cell.entity.type === 'enemy' ? `<div><strong>Награда:</strong> ${(cell.entity as any).coinsReward || 0} монет</div>` : ''}
-    ` : ''}
+      ${cell.entity.type === "enemy" ? `<div><strong>Награда:</strong> ${(cell.entity as any).coinsReward || 0} монет</div>` : ""}
+    `
+        : ""
+    }
   `;
+
+  function handleMouseMove(event: MouseEvent) {
+    tooltipPosition = {
+      top: event.clientY + 15, // смещение по вертикали от курсора
+      left: event.clientX + 15, // смещение по горизонтали от курсора
+    };
+  }
 
   function show() {
     showTooltip = true;
-    updateTooltipPosition();
   }
 
   function hide() {
     showTooltip = false;
   }
-
-  function updateTooltipPosition() {
-    if (!cellElement) return;
-    const rect = cellElement.getBoundingClientRect();
-    tooltipPosition = {
-      top: rect.top + window.scrollY - 10,
-      left: rect.right + window.scrollX + 10,
-    };
-  }
-
-  onMount(() => {
-    window.addEventListener("scroll", updateTooltipPosition);
-    window.addEventListener("resize", updateTooltipPosition);
-    return () => {
-      window.removeEventListener("scroll", updateTooltipPosition);
-      window.removeEventListener("resize", updateTooltipPosition);
-    };
-  });
 </script>
 
 <button
-  bind:this={cellElement}
   class="cell"
   on:click={() => onClick(cell)}
   on:mouseenter={show}
   on:mouseleave={hide}
+  on:mousemove={handleMouseMove}
   type="button"
 >
   {#if cell.entity}
@@ -77,12 +67,12 @@
 
 <style>
   button.cell {
-    width: 90px;
-    height: 90px;
-    background: #747474;
+    width: 80px;
+    height: 80px;
+    background: #5e5e5e;
     border: 2px solid #333;
     box-shadow: inset 2px 2px 0 #555;
-    font-family: 'Press Start 2P', cursive;
+    font-family: "Press Start 2P", cursive, monospace;
     font-size: 10px;
     color: #eee;
     image-rendering: pixelated;

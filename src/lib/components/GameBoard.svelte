@@ -49,7 +49,7 @@
   {/each}
 </div>
 
-<DebugControls {activeAction} {setActiveAction} {player} />
+<!-- <DebugControls {activeAction} {setActiveAction} {player} /> -->
 
 <style>
   .gameboard {

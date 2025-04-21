@@ -1,10 +1,32 @@
 <script lang="ts">
-  import EnemyCreator from "$lib/components/EnemyCreator.svelte";
   import GameBoard from "$lib/components/GameBoard.svelte";
 </script>
 
 <div>
-  Бой
-  <GameBoard></GameBoard>
-  <EnemyCreator></EnemyCreator>
+  <div class="battle-container">
+    Бой
+    <div class="info-container">a</div>
+    <div class="gameboard-container">
+      <GameBoard></GameBoard>
+    </div>
+  </div>
+  <div class="spell-container">
+    a
+  </div>
 </div>
+
+<style>
+  .battle-container {
+    width: 100%;
+    height: 75%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .spell-container{
+    height: 25%;
+    width: 100%;
+  }
+  .gameboard-container {
+    padding-right: 5px;
+  }
+</style>

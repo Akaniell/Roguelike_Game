@@ -38,10 +38,8 @@
 </script>
 
 <div class="debug-controls">
-  <h1>Посадить игрока в случайную клетку</h1>
   <button on:click={placePlayerRandomly}>Добавить игрока</button>
 
-  <h1>Действия</h1>
   <button
     on:click={() => onActionClick("damage")}
     class:active={activeAction === "damage"}
