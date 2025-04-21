@@ -2,15 +2,18 @@ import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import { playerStore } from "$lib/Stores/playerStore";
 import type { Building, Enemy, Player } from "$lib/Stores/types";
+import { createEnemyFromTemplate, createRandomEnemy } from "./enemyFactory";
 
 export function addEnemy(name: string, hp: number) {
   let type = "enemy" as "player" | "enemy" | "building";
+  let coinsReward = 1;
   enemiesStore.update((enemies) => {
     const newEnemy = {
       id: Date.now(),
       name,
       type,
       hp,
+      coinsReward,
     };
     return [...enemies, newEnemy];
   });
@@ -64,61 +67,93 @@ export function movePlayerToBoard(player: Player, x: number, y: number) {
 }
 
 export function applyDamageToCell(x: number, y: number, damage: number) {
+  let coinsReward = 0;
+  let enemyIdToRemove: number | null = null;
+
+  // Получим текущие значения сторов для синхронизации
+  let currentPlayer: Player | undefined;
+  playerStore.subscribe((p) => (currentPlayer = p))();
+  let currentEnemies: Enemy[] = [];
+  enemiesStore.subscribe((e) => (currentEnemies = e))();
+
+  // Обновляем игровое поле
   gameBoardStore.update((board) => {
-    const cell = board.cells[y][x];
+    const newCells = board.cells.map((row) =>
+      row.map((cell) => ({
+        ...cell,
+        entity: cell.entity ? { ...cell.entity } : undefined,
+      }))
+    );
+
+    const cell = newCells[y][x];
 
     if (cell.entity && cell.entity.hp > 0) {
       switch (cell.entity.type) {
         case "player":
-          playerStore.update((player) => {
-            if (player) {
-              player.hp -= damage;
-              if (cell.entity) cell.entity.hp = player.hp;
-              if (player.hp <= 0) {
-                console.log(`Игрок на клетке (${x}, ${y}) был повержен!`);
-                cell.content = "empty";
-                cell.entity = undefined;
-              }
+          {
+            const playerEntity = cell.entity as Player;
+            playerEntity.hp -= damage;
+
+            // Обновляем playerStore
+            if (currentPlayer) {
+              currentPlayer = { ...currentPlayer, hp: playerEntity.hp };
+              playerStore.set(currentPlayer);
             }
-            return { ...player };
-          });
+
+            if (playerEntity.hp <= 0) {
+              cell.content = "empty";
+              cell.entity = undefined;
+            }
+          }
           break;
 
         case "enemy":
-          enemiesStore.update((enemies) => {
-            return enemies.map((enemy) => {
-              if (enemy.id === cell.entity?.id) {
-                enemy.hp -= damage;
-                cell.entity.hp = enemy.hp;
+          {
+            const enemyEntity = cell.entity as Enemy;
+            enemyEntity.hp -= damage;
 
-                if (enemy.hp <= 0) {
-                  console.log(
-                    `Враг (${enemy.name}) на клетке (${x}, ${y}) был повержен!`
-                  );
-                  cell.content = "empty";
-                  cell.entity = undefined;
-                }
-                return { ...enemy };
-              }
-              return enemy;
-            });
-          });
+            if (enemyEntity.hp <= 0) {
+              coinsReward = enemyEntity.coinsReward || 0;
+              enemyIdToRemove = enemyEntity.id;
+              cell.content = "empty";
+              cell.entity = undefined;
+            } else {
+              // Обновляем enemy в currentEnemies
+              currentEnemies = currentEnemies.map((enemy) =>
+                enemy.id === enemyEntity.id ? { ...enemyEntity } : enemy
+              );
+            }
+          }
           break;
 
         default:
-          console.log(
-            `Неизвестный тип сущности (${cell.entity.type}) на клетке (${x}, ${y}).`
-          );
+          console.log(`Неизвестный тип сущности (${cell.entity.type})`);
       }
-      console.log(
-        `Сущности (${cell.entity.name}) на клетке (${x}, ${y}) нанесен урон. HP: ${cell.entity.hp}`
-      );
     } else {
       console.log(`В клетке (${x}, ${y}) нет сущности для нанесения урона.`);
     }
 
-    return board;
+    return { ...board, cells: newCells };
   });
+
+  // Если враг убит, обновляем enemiesStore и начисляем монеты игроку
+  if (enemyIdToRemove !== null) {
+    currentEnemies = currentEnemies.filter(
+      (enemy) => enemy.id !== enemyIdToRemove
+    );
+    enemiesStore.set(currentEnemies);
+
+    if (currentPlayer) {
+      currentPlayer = {
+        ...currentPlayer,
+        coins: currentPlayer.coins + coinsReward,
+      };
+      playerStore.set(currentPlayer);
+    }
+  } else {
+    // Если враг не убит, просто обновляем enemiesStore с изменённым HP
+    enemiesStore.set(currentEnemies);
+  }
 }
 
 export function applyHealToCell(x: number, y: number, heal: number) {
@@ -175,7 +210,6 @@ export function swapEntities(
   cell2Y: number
 ) {
   gameBoardStore.update((board) => {
-    // Проверка границ
     if (
       cell1Y < 0 ||
       cell1Y >= board.height ||
@@ -193,11 +227,9 @@ export function swapEntities(
     const cell1 = board.cells[cell1Y][cell1X];
     const cell2 = board.cells[cell2Y][cell2X];
 
-    // Сохраняем временные копии
     const tempContent = cell1.content;
     const tempEntity = cell1.entity;
 
-    // Обмениваем содержимое
     cell1.content = cell2.content;
     cell1.entity = cell2.entity;
 
@@ -216,7 +248,7 @@ export function handleCellAction(
   x: number,
   y: number,
   action: string,
-  amount: number = 1
+  amount: number = 10
 ) {
   switch (action) {
     case "damage":
@@ -252,4 +284,28 @@ export function getEntityInfo(
   })();
 
   return result;
+}
+
+export function addEnemyFromTemplate(template: Enemy, x: number, y: number) {
+  const newEnemy = createEnemyFromTemplate(template);
+
+  enemiesStore.update((enemies) => [...enemies, newEnemy]);
+
+  gameBoardStore.update((board) => {
+    board.cells[y][x].content = "enemy";
+    board.cells[y][x].entity = newEnemy;
+    return board;
+  });
+}
+
+export function addRandomEnemy(x: number, y: number) {
+  const newEnemy = createRandomEnemy();
+
+  enemiesStore.update((enemies) => [...enemies, newEnemy]);
+
+  gameBoardStore.update((board) => {
+    board.cells[y][x].content = "enemy";
+    board.cells[y][x].entity = newEnemy;
+    return board;
+  });
 }

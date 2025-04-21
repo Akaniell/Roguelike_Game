@@ -20,8 +20,6 @@
 
   function createEnemy() {
     addEnemy(name, hp);
-    // Get the last enemy ID (assuming it's the one we just added)
-    // Place the enemy on the board at the specified coordinates
     placeEnemyOnBoard();
     name = "";
     hp = 10;

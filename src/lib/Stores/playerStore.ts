@@ -6,4 +6,5 @@ export const playerStore = localStorageStore<Player>("player", {
   name: "Игрок",
   type: "player",
   hp: 100,
+  coins: 0,
 });

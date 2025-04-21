@@ -2,20 +2,19 @@ import type { GameBoard, Player } from "./types";
 import { localStorageStore } from "./localStorageStore";
 
 const initialGameBoard: GameBoard = {
-  width: 7,
-  height: 5,
-  cells: Array(5)
+  width: 9,
+  height: 7,
+  cells: Array(7)
     .fill(null)
     .map((_, y) =>
-      Array(7)
+      Array(9)
         .fill(null)
-        .map((_, x) => ({ x, y, content: 'empty' }))
+        .map((_, x) => ({ x, y, content: "empty" }))
     ),
 };
 
-// Инициализация игрока на поле
-initialGameBoard.cells[2][0].content = "player";
-initialGameBoard.cells[2][0].entity = {
+initialGameBoard.cells[3][0].content = "player";
+initialGameBoard.cells[3][0].entity = {
   id: 1,
   name: "Игрок",
   type: "player",

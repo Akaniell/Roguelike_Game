@@ -1,18 +1,17 @@
 <script lang="ts">
-  import {
-    handleCellAction,
-    swapEntities,
-    movePlayerToBoard,
-    getEntityInfo,
-  } from "$lib/utils/gameUtils";
-  import { onMount } from "svelte";
   import CellComponent from "./Cell.svelte";
-  import type { Cell, GameBoard, Player } from "$lib/Stores/types";
+  import DebugControls from "./DebugControls.svelte";
+
+  import { handleCellAction, swapEntities } from "$lib/utils/gameUtils";
+
   import { gameBoardStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
 
+  import type { Cell, GameBoard, Player } from "$lib/Stores/types";
+
   let gameBoard: GameBoard;
   let player: Player;
+
   $: gameBoardStore.subscribe((value) => (gameBoard = value));
   $: playerStore.subscribe((value) => (player = value));
 
@@ -34,7 +33,7 @@
     }
   }
 
-  function handleActionClick(action: string) {
+  function setActiveAction(action: string | null) {
     activeAction = action;
     firstCell = null;
   }
@@ -48,42 +47,9 @@
       {/each}
     </div>
   {/each}
-
-  <h1>Посадить игрока в Случайную клетку</h1>
-  <button
-    on:click={() =>
-      movePlayerToBoard(
-        player,
-        Math.floor(Math.random() * gameBoard.width),
-        Math.floor(Math.random() * gameBoard.height)
-      )}
-  >
-    Добавить
-  </button>
-  <h1>Действия</h1>
-  <button
-    on:click={() => handleActionClick("damage")}
-    class:active={activeAction === "damage"}
-  >
-    Нанести урон
-  </button>
-  <button
-    on:click={() => handleActionClick("heal")}
-    class:active={activeAction === "heal"}
-  >
-    Лечение
-  </button>
-
-  <button
-    on:click={() => handleActionClick("move")}
-    class:active={activeAction === "move"}
-  >
-    Передвинуть
-  </button>
-
-  <h1>Игрок:</h1>
-  <p>{player.name}, {player.type}, {player.hp}</p>
 </div>
+
+<DebugControls {activeAction} {setActiveAction} {player} />
 
 <style>
   .gameboard {
