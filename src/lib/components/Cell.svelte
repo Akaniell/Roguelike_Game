@@ -79,7 +79,7 @@
   button.cell {
     width: 90px;
     height: 90px;
-    background: #111;
+    background: #747474;
     border: 2px solid #333;
     box-shadow: inset 2px 2px 0 #555;
     font-family: 'Press Start 2P', cursive;
