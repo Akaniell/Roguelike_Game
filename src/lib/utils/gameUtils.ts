@@ -77,7 +77,7 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
           playerStore.update((player) => {
             if (player) {
               player.hp -= damage;
-              if (cell.entity) cell.entity.hp = player.hp; 
+              if (cell.entity) cell.entity.hp = player.hp;
               if (player.hp <= 0) {
                 console.log(`Игрок на клетке (${x}, ${y}) был повержен!`);
                 cell.content = "empty";
@@ -93,7 +93,7 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
             return enemies.map((enemy) => {
               if (enemy.id === cell.entity?.id) {
                 enemy.hp -= damage;
-                cell.entity.hp = enemy.hp; 
+                cell.entity.hp = enemy.hp;
 
                 if (enemy.hp <= 0) {
                   console.log(
@@ -170,4 +170,90 @@ export function applyHealToCell(x: number, y: number, heal: number) {
 
     return board;
   });
+}
+
+export function swapEntities(
+  cell1X: number,
+  cell1Y: number,
+  cell2X: number,
+  cell2Y: number
+) {
+  gameBoardStore.update((board) => {
+    // Проверка границ
+    if (
+      cell1Y < 0 ||
+      cell1Y >= board.height ||
+      cell1X < 0 ||
+      cell1X >= board.width ||
+      cell2Y < 0 ||
+      cell2Y >= board.height ||
+      cell2X < 0 ||
+      cell2X >= board.width
+    ) {
+      console.error("Invalid cell coordinates for swap!");
+      return board;
+    }
+
+    const cell1 = board.cells[cell1Y][cell1X];
+    const cell2 = board.cells[cell2Y][cell2X];
+
+    // Сохраняем временные копии
+    const tempContent = cell1.content;
+    const tempEntity = cell1.entity;
+
+    // Обмениваем содержимое
+    cell1.content = cell2.content;
+    cell1.entity = cell2.entity;
+
+    cell2.content = tempContent;
+    cell2.entity = tempEntity;
+
+    console.log(
+      `Обмен сущностей между (${cell1X}, ${cell1Y}) и (${cell2X}, ${cell2Y})`
+    );
+
+    return board;
+  });
+}
+
+export function handleCellAction(
+  x: number,
+  y: number,
+  action: string,
+  amount: number = 1
+) {
+  switch (action) {
+    case "damage":
+      applyDamageToCell(x, y, amount);
+      break;
+    case "heal":
+      applyHealToCell(x, y, amount);
+      break;
+    default:
+      console.log(`Неизвестное действие "${action}" для клетки (${x}, ${y})`);
+  }
+}
+
+export function getEntityInfo(
+  x: number,
+  y: number
+): {
+  entity: Player | Enemy | Building | undefined;
+  type: "empty" | "player" | "enemy" | "building";
+} {
+  let result: {
+    entity: Player | Enemy | Building | undefined;
+    type: "empty" | "player" | "enemy" | "building";
+  } = { entity: undefined, type: "empty" };
+
+  gameBoardStore.subscribe((board) => {
+    if (x >= 0 && x < board.width && y >= 0 && y < board.height) {
+      result = {
+        entity: board.cells[y][x].entity,
+        type: board.cells[y][x].content,
+      };
+    }
+  })();
+
+  return result;
 }

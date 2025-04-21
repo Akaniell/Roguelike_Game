@@ -4,72 +4,43 @@
     playerStore,
     type GameBoard,
     type Player,
+    type Cell,
   } from "$lib/Stores/localstorage";
   import {
-    applyDamageToCell,
-    applyHealToCell,
+    handleCellAction,
+    swapEntities,
     movePlayerToBoard,
+    getEntityInfo, // Импортируем getEntityInfo
   } from "$lib/utils/gameUtils";
   import { onMount } from "svelte";
-  import Cell from "./Cell.svelte";
+  import CellComponent from "./Cell.svelte";
 
   let gameBoard: GameBoard;
   let player: Player;
   $: gameBoardStore.subscribe((value) => (gameBoard = value));
   $: playerStore.subscribe((value) => (player = value));
 
-  let selectedCell: Cell | null = null;
   let activeAction: string | null = null;
-  let firstCell: Cell | null = null;
+  let firstCell: { x: number; y: number } | null = null;
 
   function handleCellClick(cell: Cell) {
-    switch (activeAction) {
-      case "move":
-        if (!firstCell) {
-          firstCell = cell;
-        } else {
-          swapEntities(firstCell, cell);
-          firstCell = null;
-          activeAction = null;
-        }
-        break;
-      case "damage":
-        applyDamageToCell(cell.x, cell.y, 1);
+    if (activeAction === "move") {
+      if (!firstCell) {
+        firstCell = { x: cell.x, y: cell.y };
+      } else {
+        swapEntities(firstCell.x, firstCell.y, cell.x, cell.y);
+        firstCell = null;
         activeAction = null;
-        break;
-      case "heal":
-        applyHealToCell(cell.x, cell.y, 1);
-        activeAction = null;
-        break;
-      default:
-        selectedCell = cell;
+      }
+    } else if (activeAction) {
+      handleCellAction(cell.x, cell.y, activeAction);
+      activeAction = null;
     }
-  }
-
-  function swapEntities(cell1: Cell, cell2: Cell) {
-    gameBoardStore.update((board) => {
-      const temp = board.cells[cell1.y][cell1.x].content;
-      board.cells[cell1.y][cell1.x].content =
-        board.cells[cell2.y][cell2.x].content;
-      board.cells[cell2.y][cell2.x].content = temp;
-
-      const tempEntity = board.cells[cell1.y][cell1.x].entity;
-      board.cells[cell1.y][cell1.x].entity =
-        board.cells[cell2.y][cell2.x].entity;
-      board.cells[cell2.y][cell2.x].entity = tempEntity;
-
-      return board;
-    });
-  }
-
-  function placePlayerOnBoard(x: number, y: number) {
-    const player: Player = $playerStore;
-    movePlayerToBoard(player, x, y);
   }
 
   function handleActionClick(action: string) {
     activeAction = action;
-    selectedCell = null;
+    firstCell = null;
   }
 </script>
 
@@ -77,7 +48,8 @@
   {#each gameBoard.cells as row (row[0].y)}
     <div class="row">
       {#each row as cell (cell.x)}
-        <Cell cell={cell} onClick={handleCellClick} entity={cell.entity} />
+        <!-- Используем CellComponent вместо Cell -->
+        <CellComponent {cell} onClick={handleCellClick} />
       {/each}
     </div>
   {/each}
@@ -85,11 +57,14 @@
   <h1>Посадить игрока в Случайную клетку</h1>
   <button
     on:click={() =>
-      placePlayerOnBoard(
-        Math.floor(Math.random() * (6 - 0 + 1) + 0),
-        Math.floor(Math.random() * (4 - 0 + 1) + 0)
-      )}>Добавить</button
+      movePlayerToBoard(
+        player,
+        Math.floor(Math.random() * gameBoard.width),
+        Math.floor(Math.random() * gameBoard.height)
+      )}
   >
+    Добавить
+  </button>
   <h1>Действия</h1>
   <button
     on:click={() => handleActionClick("damage")}

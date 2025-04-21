@@ -1,16 +1,18 @@
 <script lang="ts">
-  import type { Cell, Player, Enemy, Building } from "$lib/Stores/localstorage";
+  import type { Cell } from "$lib/Stores/localstorage";
+  import { getEntityInfo } from "$lib/utils/gameUtils";
 
   export let cell: Cell;
-  export let onClick;
-  export let entity: Player | Enemy | Building | null = null;
+  export let onClick: (cell: Cell) => void;
+
+  $: entityInfo = getEntityInfo(cell.x, cell.y);
 </script>
 
 <button class="cell" on:click={() => onClick(cell)}>
-  {#if entity}
-    {entity.name}
+  {#if entityInfo.entity}
+    {entityInfo.entity.name}
   {:else}
-    Пусто
+    {cell.content}
   {/if}
 </button>
 
