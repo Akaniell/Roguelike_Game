@@ -7,6 +7,9 @@
 
   let showTooltip = false;
   let tooltipPosition = { top: 0, left: 0 };
+  let tooltipElement: HTMLElement | null = null;
+  const OFFSET_X = 15;
+  const OFFSET_Y = 15;
 
   const typeNames: Record<string, string> = {
     player: "Игрок",
@@ -29,10 +32,24 @@
   `;
 
   function handleMouseMove(event: MouseEvent) {
-    tooltipPosition = {
-      top: event.clientY + 15,
-      left: event.clientX + 15,
-    };
+    if (!tooltipElement) return;
+
+    const rect = tooltipElement.getBoundingClientRect();
+
+    let left = event.clientX + OFFSET_X;
+    let top = event.clientY + OFFSET_Y;
+
+    if (left + rect.width > window.innerWidth) {
+      left = event.clientX - rect.width - OFFSET_X;
+      if (left < 0) left = 0;
+    }
+
+    if (top + rect.height > window.innerHeight) {
+      top = window.innerHeight - rect.height;
+      if (top < 0) top = 0;
+    }
+
+    tooltipPosition = { left, top };
   }
 
   function show() {
@@ -59,6 +76,7 @@
   {/if}
 
   <Tooltip
+    bind:tooltipElement
     visible={showTooltip}
     content={tooltipContent}
     position={tooltipPosition}

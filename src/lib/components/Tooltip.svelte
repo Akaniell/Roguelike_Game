@@ -2,9 +2,11 @@
   export let content: string;
   export let visible: boolean = false;
   export let position: { top: number; left: number } = { top: 0, left: 0 };
+  export let tooltipElement: HTMLElement | null = null;
 </script>
 
 <div
+  bind:this={tooltipElement}
   class="tooltip {visible ? 'visible' : ''}"
   style="top: {position.top}px; left: {position.left}px;"
   aria-hidden={!visible}
