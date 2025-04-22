@@ -18,18 +18,33 @@
     empty: "Пусто",
   };
 
-  $: tooltipContent = `
-    <div><strong>Тип:</strong> ${typeNames[cell.content] || cell.content}</div>
-    ${
-      cell.entity
-        ? `
-      <div><strong>Имя:</strong> ${cell.entity.name}</div>
-      <div><strong>HP:</strong> ${cell.entity.hp}</div>
-      ${cell.entity.type === "enemy" ? `<div><strong>Награда:</strong> ${(cell.entity as any).coinsReward || 0} монет</div>` : ""}
-    `
-        : ""
-    }
-  `;
+  function declOfNum(number: number, titles: [string, string, string]): string {
+  const cases = [2, 0, 1, 1, 1, 2];
+  const n = Math.abs(number);
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 19) {
+    return titles[2];
+  }
+  const mod10 = n % 10;
+  return titles[(mod10 < 5) ? cases[mod10] : cases[5]];
+}
+
+$: tooltipContent = `
+  <div><strong>Тип:</strong> ${typeNames[cell.content] || cell.content}</div>
+  ${
+    cell.entity
+      ? (() => {
+          const coinsReward = (cell.entity as any).coinsReward || 0;
+          const coinWord = declOfNum(coinsReward, ['монета', 'монеты', 'монет']);
+          return `
+            <div><strong>Имя:</strong> ${cell.entity.name}</div>
+            <div><strong>HP:</strong> ${cell.entity.hp}</div>
+            ${cell.entity.type === "enemy" ? `<div><strong>Награда:</strong> ${coinsReward} ${coinWord}</div>` : ""}
+          `;
+        })()
+      : ""
+  }
+`;
 
   function handleMouseMove(event: MouseEvent) {
     if (!tooltipElement) return;
