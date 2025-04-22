@@ -2,12 +2,11 @@
   import CellComponent from "./Cell.svelte";
   import DebugControls from "./DebugControls.svelte";
 
-  import { handleCellAction, swapEntities } from "$lib/utils/gameUtils";
-
   import { gameBoardStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
 
   import type { Cell, GameBoard, Player } from "$lib/Stores/types";
+  import { handleCellAction, swapEntities } from "$lib/utils/board/boardUtils";
 
   let gameBoard: GameBoard;
   let player: Player;

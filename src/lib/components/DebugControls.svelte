@@ -1,8 +1,8 @@
 <script lang="ts">
   import { enemyTemplates } from "$lib/data/enemyTemplates";
   import type { Player } from "$lib/Stores/types";
-  import { movePlayerToBoard, handleCellAction } from "$lib/utils/gameUtils";
-  import { addEnemyFromTemplate, addRandomEnemy } from "$lib/utils/gameUtils";
+  import { addEnemyFromTemplate, addRandomEnemy } from "$lib/utils/entities/enemyUtils";
+  import { movePlayerToBoard } from "$lib/utils/entities/playerUtils";
 
   export let activeAction: string | null;
   export let setActiveAction: (action: string | null) => void;
