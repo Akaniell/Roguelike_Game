@@ -27,15 +27,15 @@
   }
   .sidebar-container {
     border: 3px solid #000000;
-    flex: 0 0 25%; /* фиксированная ширина 25% */
+    flex: 0 0 25%; 
     max-width: 25%;
     min-width: 25%;
-    box-sizing: border-box; /* чтобы border не влиял на ширину */
+    box-sizing: border-box; 
   }
   .page-container {
-    flex: 1; /* занимает всё оставшееся место */
+    flex: 1; 
     border: 3px solid #000000;
     box-sizing: border-box;
-    overflow-y: auto; /* если контента много, добавляем прокрутку */
+    overflow-y: auto; 
   }
 </style>

@@ -59,7 +59,7 @@
     Передвинуть
   </button>
 
-  <h1>Создание врагов</h1>
+  <p>Создание врагов</p>
   <select bind:value={selectedTemplateIndex}>
     {#each enemyTemplates as template, i}
       <option value={i}>{template.name} (HP: {template.hp})</option>

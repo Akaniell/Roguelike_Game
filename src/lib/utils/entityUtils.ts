@@ -2,10 +2,11 @@ import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import { playerStore } from "$lib/Stores/playerStore";
 import type { Building, Enemy, Player } from "$lib/Stores/types";
+import { derived } from "svelte/store";
 
 export function applyDamageToCell(x: number, y: number, damage: number) {
   let coinsReward = 0;
-  let enemyIdToRemove: number | null = null;
+  let enemyIdToRemove: string | null = null;
 
   let currentPlayer: Player | undefined;
   playerStore.subscribe((p) => (currentPlayer = p))();
@@ -134,26 +135,36 @@ export function applyHealToCell(x: number, y: number, heal: number) {
   });
 }
 
-export function getEntityInfo(
-  x: number,
-  y: number
-): {
-  entity: Player | Enemy | Building | undefined;
-  type: "empty" | "player" | "enemy" | "building";
-} {
-  let result: {
-    entity: Player | Enemy | Building | undefined;
-    type: "empty" | "player" | "enemy" | "building";
-  } = { entity: undefined, type: "empty" };
+// export function getEntityInfo(
+//   x: number,
+//   y: number
+// ): {
+//   entity: Player | Enemy | Building | undefined;
+//   type: "empty" | "player" | "enemy" | "building";
+// } {
+//   let result: {
+//     entity: Player | Enemy | Building | undefined;
+//     type: "empty" | "player" | "enemy" | "building";
+//   } = { entity: undefined, type: "empty" };
 
-  gameBoardStore.subscribe((board) => {
-    if (x >= 0 && x < board.width && y >= 0 && y < board.height) {
-      result = {
-        entity: board.cells[y][x].entity,
-        type: board.cells[y][x].content,
-      };
-    }
-  })();
+//   gameBoardStore.subscribe((board) => {
+//     if (x >= 0 && x < board.width && y >= 0 && y < board.height) {
+//       result = {
+//         entity: board.cells[y][x].entity,
+//         type: board.cells[y][x].content,
+//       };
+//     }
+//   })();
 
-  return result;
+//   return result;
+// }
+
+export function getEntityInfo(x: number, y: number) {
+  return derived(
+    gameBoardStore,
+    $board => ({
+      entity: $board.cells[y]?.[x]?.entity,
+      type: $board.cells[y]?.[x]?.content ?? "empty"
+    })
+  );
 }

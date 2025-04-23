@@ -4,7 +4,7 @@ import { enemyTemplates } from "$lib/data/enemyTemplates";
 export function createEnemyFromTemplate(template: Enemy): Enemy {
   return {
     ...template,
-    id: Date.now() + Math.floor(Math.random() * 1000),
+    id: crypto.randomUUID(),
   };
 }
 

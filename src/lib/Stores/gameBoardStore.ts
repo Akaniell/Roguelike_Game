@@ -15,7 +15,7 @@ const initialGameBoard: GameBoard = {
 
 initialGameBoard.cells[3][0].content = "player";
 initialGameBoard.cells[3][0].entity = {
-  id: 1,
+  id: '1',
   name: "Игрок",
   type: "player",
   hp: 100,

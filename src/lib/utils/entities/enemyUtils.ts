@@ -1,3 +1,4 @@
+//enemyUtils.ts
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import type { Enemy } from "$lib/Stores/types";
@@ -8,7 +9,7 @@ export function addEnemy(name: string, hp: number) {
   let coinsReward = 1;
   enemiesStore.update((enemies) => {
     const newEnemy = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       name,
       type,
       hp,
@@ -18,7 +19,7 @@ export function addEnemy(name: string, hp: number) {
   });
 }
 
-export function removeEnemy(id: number) {
+export function removeEnemy(id: string) {
   enemiesStore.update((enemies) => enemies.filter((enemy) => enemy.id !== id));
 }
 

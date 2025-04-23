@@ -6,7 +6,10 @@
   export let onClick: (cell: Cell) => void;
 
   let showTooltip = false;
-  let tooltipPosition = { top: 0, left: 0 };
+  let tooltipPosition = {
+    top: 0,
+    left: 0,
+  };
   let tooltipElement: HTMLElement | null = null;
   const OFFSET_X = 15;
   const OFFSET_Y = 15;
@@ -19,23 +22,27 @@
   };
 
   function declOfNum(number: number, titles: [string, string, string]): string {
-  const cases = [2, 0, 1, 1, 1, 2];
-  const n = Math.abs(number);
-  const mod100 = n % 100;
-  if (mod100 >= 11 && mod100 <= 19) {
-    return titles[2];
+    const cases = [2, 0, 1, 1, 1, 2];
+    const n = Math.abs(number);
+    const mod100 = n % 100;
+    if (mod100 >= 11 && mod100 <= 19) {
+      return titles[2];
+    }
+    const mod10 = n % 10;
+    return titles[mod10 < 5 ? cases[mod10] : cases[5]];
   }
-  const mod10 = n % 10;
-  return titles[(mod10 < 5) ? cases[mod10] : cases[5]];
-}
 
-$: tooltipContent = `
+  $: tooltipContent = `
   <div><strong>Тип:</strong> ${typeNames[cell.content] || cell.content}</div>
   ${
     cell.entity
       ? (() => {
           const coinsReward = (cell.entity as any).coinsReward || 0;
-          const coinWord = declOfNum(coinsReward, ['монета', 'монеты', 'монет']);
+          const coinWord = declOfNum(coinsReward, [
+            "монета",
+            "монеты",
+            "монет",
+          ]);
           return `
             <div><strong>Имя:</strong> ${cell.entity.name}</div>
             <div><strong>HP:</strong> ${cell.entity.hp}</div>
@@ -64,7 +71,10 @@ $: tooltipContent = `
       if (top < 0) top = 0;
     }
 
-    tooltipPosition = { left, top };
+    tooltipPosition = {
+      left,
+      top,
+    };
   }
 
   function show() {
@@ -112,9 +122,11 @@ $: tooltipContent = `
     cursor: pointer;
     user-select: none;
   }
+
   button.cell:active {
     background: #555;
     border-color: #999;
     box-shadow: inset 1px 1px 0 #222;
   }
 </style>
+
