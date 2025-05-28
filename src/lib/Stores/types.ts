@@ -3,10 +3,12 @@ export interface Entity {
   name: string;
   type: "player" | "enemy" | "building";
   hp: number;
+  image: string;
 }
 
 export interface Player extends Entity {
   coins: number;
+  elements: string[],
 }
 
 export interface Enemy extends Entity {

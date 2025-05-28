@@ -4,7 +4,6 @@
 
 <div>
   <div class="battle-container">
-    Бой
     <div class="info-container">a</div>
     <div class="gameboard-container">
       <GameBoard></GameBoard>
@@ -28,5 +27,9 @@
   }
   .gameboard-container {
     padding-right: 5px;
+    width: 75%;
+  }
+  .info-container{
+    width: 25%;
   }
 </style>

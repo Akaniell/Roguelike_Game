@@ -21,5 +21,11 @@ export function localStorageStore<T>(key: string, initialValue: T) {
     subscribe,
     set,
     update,
+    reset: () => {
+      set(initialValue);
+      if (browser) {
+        localStorage.removeItem(key);
+      }
+    }
   };
 }

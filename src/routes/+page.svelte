@@ -1,17 +1,69 @@
 <script lang="ts">
-  import NavButton from "$lib/components/NavButton.svelte";
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
+
+  import { playerStore } from '$lib/Stores/playerStore';
+  import { gameBoardStore } from '$lib/Stores/gameBoardStore';
+  import { enemiesStore } from '$lib/Stores/enemiesStore';
+  import { goto } from '$app/navigation';
+
+  let canContinue = false;
+
+  onMount(() => {
+    if (browser) {
+      canContinue = !!localStorage.getItem('player'); // замени на свой ключ, если нужно
+    }
+  });
+
+  function startNewGame(event: MouseEvent) {
+    event.preventDefault();
+    if (browser) {
+      // Удаляем ключи из localStorage, если нужно
+      localStorage.removeItem('player');
+      localStorage.removeItem('enemies');
+      localStorage.removeItem('gameBoard');
+      // Сбрасываем сторы
+      playerStore.reset();
+      gameBoardStore.reset();
+      enemiesStore.reset();
+
+      // Переходим в игру
+      //window.location.href = '/intro';
+      goto('/intro');
+    }
+  }
+
+  function continueGame(event: MouseEvent) {
+    event.preventDefault();
+    goto('/battle');
+  }
 </script>
 
-<svelte:head>
-  
-</svelte:head>
-
-<div>
-  <p>Скоро будет</p>
-  <NavButton text="Начать" href="/battle"></NavButton>
+<div class="start-screen">
+  <a
+    href="/battle"
+    class="nav-link"
+    on:click={continueGame}
+    aria-disabled={!canContinue}
+    tabindex={canContinue ? 0 : -1}
+    >Продолжить</a
+  >
+  <a href="/intro" class="nav-link" on:click={startNewGame}>Начать новую игру</a>
 </div>
 
 <style>
+  .start-screen {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background: url('/img/start-screen-bg.png') no-repeat center center;
+    background-size: cover;
+  }
+
+  .nav-link {
+    width: 350px;
+  }
 </style>
-
-

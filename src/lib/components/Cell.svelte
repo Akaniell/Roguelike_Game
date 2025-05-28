@@ -95,7 +95,15 @@
   type="button"
 >
   {#if cell.entity}
-    {cell.entity.name}
+    {#if cell.entity?.image}
+      <img
+        src={cell.entity.image}
+        alt={cell.entity.name}
+        class="entity-image"
+      />
+    {:else}
+      <span>{cell.entity.name}</span>
+    {/if}
   {:else}
     Пусто
   {/if}
@@ -128,5 +136,9 @@
     border-color: #999;
     box-shadow: inset 1px 1px 0 #222;
   }
+  
+  .entity-image{
+    width: 100%;
+    max-height: 100%;
+  }
 </style>
-

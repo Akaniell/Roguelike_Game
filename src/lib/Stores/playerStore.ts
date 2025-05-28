@@ -7,4 +7,6 @@ export const playerStore = localStorageStore<Player>("player", {
   type: "player",
   hp: 100,
   coins: 0,
+  elements: [],
+  image: "/img/player/player.gif",
 });

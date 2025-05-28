@@ -37,7 +37,7 @@ a:hover {
   text-decoration: underline;
 }
 
-a {
+a, button {
   width: 250px;
   height: 65px;
   background: #2c2c2c;
@@ -55,14 +55,15 @@ a {
   image-rendering: pixelated;
   text-shadow: 1px 1px 0 #000;
   transition: background-color 0.1s ease;
+  text-align: center;
 }
 
-a:hover {
+a:hover, button:hover {
   background: #3a3a3a;
   border-color: #3a3a3a;
 }
 
-a:active {
+a:active, button:active {
   background: #1e1e1e;
   border-color: #1e1e1e;
   box-shadow: inset 2px 2px 0 #000;

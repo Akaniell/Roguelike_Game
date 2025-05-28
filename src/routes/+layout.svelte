@@ -1,20 +1,24 @@
 <script lang="ts">
-  import { page } from "$app/state";
+  import { page } from "$app/stores";
   import Sidebar from "$lib/components/Sidebar.svelte";
 
-  let { children } = $props();
+  const noSidebarPaths = ["/", "/intro"];
+
+  $: currentPath = $page.url.pathname;
+  $: showSidebar = !noSidebarPaths.includes(currentPath);
 </script>
 
 <div class="container">
-  {#if page.url.pathname !== "/"}
+  {#if showSidebar}
     <div class="sidebar-container">
-      <Sidebar></Sidebar>
+      <Sidebar />
     </div>
   {/if}
   <div class="page-container">
-    {@render children()}
+    <slot />
   </div>
 </div>
+
 
 <style>
   .container {

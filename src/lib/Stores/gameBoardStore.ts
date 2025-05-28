@@ -19,6 +19,8 @@ initialGameBoard.cells[3][0].entity = {
   name: "Игрок",
   type: "player",
   hp: 100,
+  elements: [],
+  image: "/img/player/player.gif",
 };
 
 export const gameBoardStore = localStorageStore<GameBoard>(
