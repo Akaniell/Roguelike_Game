@@ -8,6 +8,9 @@ export const enemyTemplates: Enemy[] = [
     hp: 30,
     coinsReward: 1,
     image: "/img/enemies/goblin.gif",
+    moveStrategy: "straight",
+    attackRange: 1,
+    attackDamage: 2,
   },
   {
     id: "0",
@@ -16,6 +19,9 @@ export const enemyTemplates: Enemy[] = [
     hp: 50,
     coinsReward: 1,
     image: "/img/enemies/skeleton-archer.gif",
+    moveStrategy: "diagonal",
+    attackRange: 3,
+    attackDamage: 5,
   },
   {
     id: "zombie",
@@ -24,6 +30,9 @@ export const enemyTemplates: Enemy[] = [
     hp: 70,
     coinsReward: 3,
     image: "/img/enemies/normal-slime.gif",
+    moveStrategy: "zigzag",
+    attackRange: 1,
+    attackDamage: 5,
   },
   {
     id: "0",
@@ -32,6 +41,9 @@ export const enemyTemplates: Enemy[] = [
     hp: 100,
     coinsReward: 5,
     image: "/img/enemies/skeleton-melee.gif",
+    moveStrategy: "straight",
+    attackRange: 1,
+    attackDamage: 10,
   },
   {
     id: "0",
@@ -40,5 +52,8 @@ export const enemyTemplates: Enemy[] = [
     hp: 150,
     coinsReward: 10,
     image: "/img/enemies/king-slime.gif",
+    moveStrategy: "zigzag",
+    attackRange: 2,
+    attackDamage: 20,
   },
 ];

@@ -1,24 +1,35 @@
 //enemyUtils.ts
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
-import type { Enemy } from "$lib/Stores/types";
+import type { Cell, Enemy, GameBoard } from "$lib/Stores/types";
+import { get } from "svelte/store";
+import {
+  applyDamageToCellInBoard,
+  findCellByEntityId,
+  swapEntities,
+  swapEntitiesInBoard,
+} from "../board/boardUtils";
+import { applyDamageToCell } from "../entityUtils";
 import { createEnemyFromTemplate, createRandomEnemy } from "./enemyFactory";
+import * as moveStrategies from "./moveStrategies";
+import { playerStore } from "$lib/Stores/playerStore";
 
-export function addEnemy(name: string, hp: number, image: string) {
-  let type = "enemy" as "player" | "enemy" | "building";
-  let coinsReward = 1;
-  enemiesStore.update((enemies) => {
-    const newEnemy = {
-      id: crypto.randomUUID(),
-      name,
-      type,
-      hp,
-      coinsReward,
-      image,
-    };
-    return [...enemies, newEnemy];
-  });
-}
+// export function addEnemy(name: string, hp: number, image: string, moveStrategy: "straight" | "diagonal" | "zigzag") {
+//   let type = "enemy" as "player" | "enemy" | "building";
+//   let coinsReward = 1;
+//   enemiesStore.update((enemies) => {
+//     const newEnemy = {
+//       id: crypto.randomUUID(),
+//       name,
+//       type,
+//       hp,
+//       coinsReward,
+//       image,
+//       moveStrategy,
+//     };
+//     return [...enemies, newEnemy];
+//   });
+// }
 
 export function removeEnemy(id: string) {
   enemiesStore.update((enemies) => enemies.filter((enemy) => enemy.id !== id));
@@ -46,4 +57,94 @@ export function addRandomEnemy(x: number, y: number) {
     board.cells[y][x].entity = newEnemy;
     return board;
   });
+}
+
+export function moveAllEnemies() {
+  const board = get(gameBoardStore);
+  let enemies = get(enemiesStore);
+  let player = get(playerStore);
+
+  const newCells: Cell[][] = board.cells.map(row =>
+    row.map(cell => ({
+      ...cell,
+      entity: cell.entity ? { ...cell.entity } : undefined,
+    }))
+  );
+
+  let newBoard: GameBoard = {
+    ...board,
+    cells: newCells,
+  };
+
+  for (const enemy of enemies) {
+    const enemyCell = findCellByEntityId(newBoard, enemy.id);
+    if (!enemyCell) continue;
+
+    let playerCell: Cell | null = null;
+    for (const row of newBoard.cells) {
+      for (const cell of row) {
+        if (cell.content === "player") {
+          playerCell = cell;
+          break;
+        }
+      }
+      if (playerCell) break;
+    }
+    if (!playerCell) continue;
+
+    const dist = moveStrategies.distance(
+      enemyCell.x,
+      enemyCell.y,
+      playerCell.x,
+      playerCell.y
+    );
+
+    if (dist <= (enemy.attackRange ?? 1)) {
+      // Атакуем игрока
+      const result = applyDamageToCellInBoard(
+        newBoard,
+        playerCell.x,
+        playerCell.y,
+        enemy.attackDamage ?? 1
+      );
+      newBoard = result.board;
+
+      if (result.updatedPlayer) {
+        player = result.updatedPlayer;
+      }
+
+      if (result.enemyIdToRemove) {
+        enemies = enemies.filter(e => e.id !== result.enemyIdToRemove);
+      }
+    } else {
+      const strategyName = enemy.moveStrategy ?? "straight";
+      const strategy =
+        moveStrategies.moveStrategiesMap[strategyName] ??
+        moveStrategies.moveStraight;
+
+      const nextPos = strategy(enemy, newBoard);
+      if (nextPos) {
+        const targetCell = newBoard.cells[nextPos.y]?.[nextPos.x];
+        if (targetCell && targetCell.content === "empty") {
+          newBoard = swapEntitiesInBoard(
+            newBoard,
+            enemyCell.x,
+            enemyCell.y,
+            nextPos.x,
+            nextPos.y
+          );
+        }
+      }
+    }
+  }
+
+  // Удаляем мёртвых врагов из массива
+  enemies = enemies.filter(enemy => {
+    const cell = findCellByEntityId(newBoard, enemy.id);
+    return cell !== null;
+  });
+
+  gameBoardStore.set(newBoard);
+  enemiesStore.set(enemies);
+  playerStore.set(player);
 }

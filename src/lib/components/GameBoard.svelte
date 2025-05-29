@@ -1,13 +1,10 @@
 <script lang="ts">
-  import CellComponent from "./Cell.svelte";
+  import BoardCell from "./BoardCell.svelte";
   import DebugControls from "./DebugControls.svelte";
-
   import { gameBoardStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
-
   import type { Cell, GameBoard, Player } from "$lib/Stores/types";
   import { handleCellAction, swapEntities } from "$lib/utils/board/boardUtils";
-
   let gameBoard: GameBoard;
   let player: Player;
 
@@ -42,7 +39,7 @@
   {#each gameBoard.cells as row (row[0].y)}
     <div class="row">
       {#each row as cell (cell.x)}
-        <CellComponent {cell} onClick={handleCellClick} />
+        <BoardCell {cell} onClick={handleCellClick} />
       {/each}
     </div>
   {/each}

@@ -3,6 +3,7 @@
   import type { Player } from "$lib/Stores/types";
   import { addEnemyFromTemplate, addRandomEnemy } from "$lib/utils/entities/enemyUtils";
   import { movePlayerToBoard } from "$lib/utils/entities/playerUtils";
+  import { moveAllEnemies } from "$lib/utils/entities/enemyUtils";
 
   export let activeAction: string | null;
   export let setActiveAction: (action: string | null) => void;
@@ -67,6 +68,9 @@
   </select>
   <button on:click={spawnSelectedEnemy}>Создать выбранного врага</button>
   <button on:click={spawnRandomEnemy}>Создать случайного врага</button>
+
+  <!-- Новая кнопка -->
+  <button on:click={moveAllEnemies}>Пропуск хода</button>
 </div>
 
 <style>

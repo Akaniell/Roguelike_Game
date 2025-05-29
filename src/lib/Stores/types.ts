@@ -14,6 +14,9 @@ export interface Player extends Entity {
 
 export interface Enemy extends Entity {
   coinsReward: number;
+  moveStrategy? : "straight" | "diagonal" | "zigzag";  
+  attackRange: number,
+  attackDamage: number,
 }
 
 export interface Building extends Entity {}

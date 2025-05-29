@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { onMount} from "svelte";
   import { browser } from "$app/environment";
 
   import { playerStore } from "$lib/Stores/playerStore";

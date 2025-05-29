@@ -1,7 +1,6 @@
 <script lang="ts">
   import { playerStore } from "$lib/Stores/playerStore";
   import type { Player } from "$lib/Stores/types";
-  import { derived } from "svelte/store";
 
   export let wave: number = 1;
 
