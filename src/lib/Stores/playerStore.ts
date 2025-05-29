@@ -1,12 +1,5 @@
-import type { Player } from "./types";
 import { localStorageStore } from "./localStorageStore";
+import { defaultPlayer } from "$lib/data/initialValue";
+import type { Player } from "./types";
 
-export const playerStore = localStorageStore<Player>("player", {
-  id: '1',
-  name: "Игрок",
-  type: "player",
-  hp: 100,
-  coins: 0,
-  elements: [],
-  image: "/img/player/player.gif",
-});
+export const playerStore = localStorageStore<Player>("player", defaultPlayer);

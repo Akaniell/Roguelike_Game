@@ -9,6 +9,7 @@ export interface Entity {
 export interface Player extends Entity {
   coins: number;
   elements: string[],
+  effects?: StatusEffect[];
 }
 
 export interface Enemy extends Entity {
@@ -28,4 +29,12 @@ export interface GameBoard {
   width: number;
   height: number;
   cells: Cell[][];
+}
+
+export interface StatusEffect {
+  id: string;
+  name: string;
+  icon?: string; 
+  description?: string;
+  duration?: number; 
 }

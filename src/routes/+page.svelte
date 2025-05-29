@@ -1,17 +1,18 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { browser } from '$app/environment';
+  import { onMount, tick } from "svelte";
+  import { browser } from "$app/environment";
 
-  import { playerStore } from '$lib/Stores/playerStore';
-  import { gameBoardStore } from '$lib/Stores/gameBoardStore';
-  import { enemiesStore } from '$lib/Stores/enemiesStore';
-  import { goto } from '$app/navigation';
+  import { playerStore } from "$lib/Stores/playerStore";
+  import { gameBoardStore } from "$lib/Stores/gameBoardStore";
+  import { enemiesStore } from "$lib/Stores/enemiesStore";
+  import { goto } from "$app/navigation";
+  import { defaultEnemies, defaultGameBoard, defaultPlayer } from "$lib/data/initialValue";
 
   let canContinue = false;
 
   onMount(() => {
     if (browser) {
-      canContinue = !!localStorage.getItem('player'); // замени на свой ключ, если нужно
+      canContinue = !!localStorage.getItem("player"); // замени на свой ключ, если нужно
     }
   });
 
@@ -19,23 +20,16 @@
     event.preventDefault();
     if (browser) {
       // Удаляем ключи из localStorage, если нужно
-      localStorage.removeItem('player');
-      localStorage.removeItem('enemies');
-      localStorage.removeItem('gameBoard');
-      // Сбрасываем сторы
-      playerStore.reset();
-      gameBoardStore.reset();
-      enemiesStore.reset();
-
-      // Переходим в игру
-      //window.location.href = '/intro';
-      goto('/intro');
+      playerStore.set(defaultPlayer);
+      enemiesStore.set(defaultEnemies);
+      gameBoardStore.set(defaultGameBoard);
+      goto("/intro");
     }
   }
 
   function continueGame(event: MouseEvent) {
     event.preventDefault();
-    goto('/battle');
+    goto("/battle");
   }
 </script>
 
@@ -45,10 +39,10 @@
     class="nav-link"
     on:click={continueGame}
     aria-disabled={!canContinue}
-    tabindex={canContinue ? 0 : -1}
-    >Продолжить</a
+    tabindex={canContinue ? 0 : -1}>Продолжить</a
   >
-  <a href="/intro" class="nav-link" on:click={startNewGame}>Начать новую игру</a>
+  <a href="/intro" class="nav-link" on:click={startNewGame}>Начать новую игру</a
+  >
 </div>
 
 <style>
@@ -59,7 +53,7 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    background: url('/img/start-screen-bg.png') no-repeat center center;
+    background: url("/img/start-screen-bg.png") no-repeat center center;
     background-size: cover;
   }
 

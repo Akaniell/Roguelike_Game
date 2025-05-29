@@ -4,7 +4,7 @@ import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import type { Enemy } from "$lib/Stores/types";
 import { createEnemyFromTemplate, createRandomEnemy } from "./enemyFactory";
 
-export function addEnemy(name: string, hp: number) {
+export function addEnemy(name: string, hp: number, image: string) {
   let type = "enemy" as "player" | "enemy" | "building";
   let coinsReward = 1;
   enemiesStore.update((enemies) => {
@@ -14,6 +14,7 @@ export function addEnemy(name: string, hp: number) {
       type,
       hp,
       coinsReward,
+      image,
     };
     return [...enemies, newEnemy];
   });

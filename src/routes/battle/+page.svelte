@@ -1,10 +1,13 @@
 <script lang="ts">
   import GameBoard from "$lib/components/GameBoard.svelte";
+  import PlayerInfo from "$lib/components/PlayerInfo.svelte";
 </script>
 
 <div>
   <div class="battle-container">
-    <div class="info-container">a</div>
+    <div class="info-container">
+      <PlayerInfo></PlayerInfo>
+    </div>
     <div class="gameboard-container">
       <GameBoard></GameBoard>
     </div>
@@ -26,10 +29,20 @@
     width: 100%;
   }
   .gameboard-container {
-    padding-right: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
     width: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    
   }
   .info-container{
+    margin-left: 5px;
+    margin-top: 5px;
     width: 25%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
   }
 </style>
