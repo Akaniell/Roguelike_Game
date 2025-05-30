@@ -6,6 +6,7 @@
 
   $: currentPath = $page.url.pathname;
   $: showSidebar = !noSidebarPaths.includes(currentPath);
+
 </script>
 
 <div class="container">
@@ -19,7 +20,6 @@
   </div>
 </div>
 
-
 <style>
   .container {
     display: flex;
@@ -31,15 +31,15 @@
   }
   .sidebar-container {
     border: 3px solid #000000;
-    flex: 0 0 25%; 
+    flex: 0 0 25%;
     max-width: 25%;
     min-width: 25%;
-    box-sizing: border-box; 
+    box-sizing: border-box;
   }
   .page-container {
-    flex: 1; 
+    flex: 1;
     border: 3px solid #000000;
     box-sizing: border-box;
-    overflow-y: auto; 
+    overflow-y: auto;
   }
 </style>
