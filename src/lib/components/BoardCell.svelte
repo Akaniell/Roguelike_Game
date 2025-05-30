@@ -88,21 +88,13 @@
       top,
     };
   }
-
-  function show() {
-    showTooltip = true;
-  }
-
-  function hide() {
-    showTooltip = false;
-  }
 </script>
 
 <button
   class="cell"
   on:click={() => onClick(cell)}
-  on:mouseenter={show}
-  on:mouseleave={hide}
+  on:mouseenter={()=>{showTooltip = true;}}
+  on:mouseleave={()=>{showTooltip = false;}}
   on:mousemove={handleMouseMove}
   type="button"
   style="filter: {filter}; background-image: url('/img/cell-bg.png')"

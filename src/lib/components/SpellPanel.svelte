@@ -6,35 +6,42 @@
   import type { SpellCombination } from "$lib/Stores/types";
   import { spellCombinations } from "$lib/data/spellTemplates";
   import SpellTooltip from "./SpellTooltip.svelte";
+  import { selectedElements, selectedSpellName } from "$lib/Stores/spellStore";
 
   const allElements = ["Огонь", "Вода", "Земля", "Воздух"];
 
-  // Получаем данные игрока из стора
   const playerData = derived(playerStore, ($player: Player | null) => $player);
 
   let currentChosenElements: string[] = [];
+  let currentTurnElements: string[] = [];
   let unlockedSlotsCount = 2;
 
-  const unsubscribe = playerData.subscribe((player) => {
+  const unsubscribePlayer = playerData.subscribe((player) => {
     if (player) {
       currentChosenElements = player.elements ?? [];
       unlockedSlotsCount = player.unlockedSlotsCount ?? 2;
     }
   });
-  onDestroy(() => unsubscribe());
+  onDestroy(() => unsubscribePlayer());
 
-  let currentTurnElements: string[] = [];
+
+  let unsubscribe = selectedElements.subscribe((value) => {
+    currentTurnElements = value;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
+  });
 
   function addElement(el: string) {
     if (currentTurnElements.length >= unlockedSlotsCount) return;
-    currentTurnElements = [...currentTurnElements, el];
+    selectedElements.update((arr) => [...arr, el]);
   }
 
   function removeElement(index: number) {
-    currentTurnElements = currentTurnElements.filter((_, i) => i !== index);
+    selectedElements.update((arr) => arr.filter((_, i) => i !== index));
   }
 
-  // Поиск заклинания по выбранным стихиям
   $: currentSpell = getSpellByElements(currentTurnElements);
 
   function getSpellByElements(
@@ -49,6 +56,13 @@
   }
 
   let showTooltip = false;
+
+  function onResultClick() {
+    const spell = currentSpell;
+    if (!spell) return;
+
+    selectedSpellName.set(spell.spellName);
+  }
 </script>
 
 <div class="spell-panel">
@@ -88,6 +102,10 @@
       on:mouseenter={() => (showTooltip = true)}
       on:mouseleave={() => (showTooltip = false)}
       aria-label={currentSpell?.description ?? "Выберите 2 стихии"}
+      on:click={() => {
+        onResultClick();
+      }}
+      disabled={!currentSpell}
     >
       {#if currentSpell}
         {currentSpell.spellName}
@@ -197,7 +215,7 @@
 
   .result-slot {
     all: unset;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     position: relative;
     min-width: 200px;
     height: 40px;
@@ -205,13 +223,12 @@
     border: 2px solid #666;
     border-radius: 6px;
     color: #eee;
-    font-family: "Press Start 2P", monospace;
     padding: 6px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
-    cursor: default;
+    cursor: pointer;
   }
 
   .result-slot > :global(div) {
@@ -243,20 +260,21 @@
     transition:
       background-color 0.2s,
       border-color 0.2s;
-    font-family: "Press Start 2P", cursive, monospace;
     color: #eee;
     cursor: pointer;
     user-select: none;
   }
 
-  .element-button:disabled {
+  .element-button:disabled,
+  .result-slot:disabled {
     background-color: #222;
     border-color: #333;
     color: #555;
     cursor: not-allowed;
   }
 
-  .element-button:not(:disabled):hover {
+  .element-button:not(:disabled):hover,
+  .result-slot:not(:disabled):hover {
     background-color: #666;
     border-color: #aaa;
   }

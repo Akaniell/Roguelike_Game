@@ -3,30 +3,62 @@
   import DebugControls from "./DebugControls.svelte";
   import { gameBoardStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
-  import type { Cell, GameBoard, Player } from "$lib/Stores/types";
+  import type {
+    Cell,
+    GameBoard,
+    Player,
+    SpellCombination,
+  } from "$lib/Stores/types";
   import { handleCellAction, swapEntities } from "$lib/utils/board/boardUtils";
+  import { selectedElements, selectedSpellName } from "$lib/Stores/spellStore";
+  import { spellCombinations } from "$lib/data/spellTemplates";
+
   let gameBoard: GameBoard;
   let player: Player;
+  let currentSelectedSpellName: string | null = null;
 
   $: gameBoardStore.subscribe((value) => (gameBoard = value));
   $: playerStore.subscribe((value) => (player = value));
+  $: selectedSpellName.subscribe((value) => (currentSelectedSpellName = value));
 
   let activeAction: string | null = null;
   let firstCell: { x: number; y: number } | null = null;
 
   function handleCellClick(cell: Cell) {
-    if (activeAction === "move") {
-      if (!firstCell) {
-        firstCell = { x: cell.x, y: cell.y };
-      } else {
-        swapEntities(firstCell.x, firstCell.y, cell.x, cell.y);
-        firstCell = null;
+    if (!currentSelectedSpellName) {
+      if (activeAction === "move") {
+        if (!firstCell) {
+          firstCell = { x: cell.x, y: cell.y };
+        } else {
+          swapEntities(firstCell.x, firstCell.y, cell.x, cell.y);
+          firstCell = null;
+          activeAction = null;
+        }
+      } else if (activeAction) {
+        handleCellAction(cell.x, cell.y, activeAction);
         activeAction = null;
       }
-    } else if (activeAction) {
-      handleCellAction(cell.x, cell.y, activeAction);
-      activeAction = null;
+      return;
     }
+    const spell = spellCombinations.find(
+      (s) => s.spellName === currentSelectedSpellName
+    );
+    if (!spell) {
+      console.warn("Заклинание не найдено:", currentSelectedSpellName);
+      return;
+    }
+
+    // Здесь вызываем функцию применения заклинания на клетку
+    applySpellOnCell(spell, cell);
+
+    // После применения сбрасываем выбор
+    selectedSpellName.set(null);
+  }
+
+  function applySpellOnCell(spell: SpellCombination, cell: Cell) {
+    console.log(`Применяем заклинание "${spell.spellName}" на клетку`, cell);
+    selectedElements.set([]);
+    // TODO: Реализовать механику применения заклинания
   }
 
   function setActiveAction(action: string | null) {
