@@ -3,6 +3,7 @@
   import GameBoard from "$lib/components/GameBoard.svelte";
   import PlayerInfo from "$lib/components/PlayerInfo.svelte";
   import SpellPanel from "$lib/components/SpellPanel.svelte";
+  import "$lib/utils/gameController.ts";
 </script>
 
 <div style="height: 100vh">

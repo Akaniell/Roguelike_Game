@@ -3,10 +3,11 @@
   import { browser } from "$app/environment";
 
   import { playerStore } from "$lib/Stores/playerStore";
-  import { gameBoardStore } from "$lib/Stores/gameBoardStore";
+  import { currentWaveStore, gameBoardStore } from "$lib/Stores/gameBoardStore";
   import { enemiesStore } from "$lib/Stores/enemiesStore";
   import { goto } from "$app/navigation";
   import { defaultEnemies, defaultGameBoard, defaultPlayer } from "$lib/data/initialValue";
+  import { spawnWave } from "$lib/utils/gameController";
 
   let canContinue = false;
 
@@ -23,6 +24,8 @@
       playerStore.set(defaultPlayer);
       enemiesStore.set(defaultEnemies);
       gameBoardStore.set(defaultGameBoard);
+      currentWaveStore.set(1);
+      spawnWave(1);
       goto("/intro");
     }
   }

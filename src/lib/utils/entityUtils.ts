@@ -2,7 +2,7 @@ import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import { playerStore } from "$lib/Stores/playerStore";
 import type { Building, Enemy, Player } from "$lib/Stores/types";
-import { derived } from "svelte/store";
+import { derived, get } from "svelte/store";
 
 export function applyDamageToCell(x: number, y: number, damage: number) {
   let coinsReward = 0;
@@ -10,8 +10,7 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
 
   let currentPlayer: Player | undefined;
   playerStore.subscribe((p) => (currentPlayer = p))();
-  let currentEnemies: Enemy[] = [];
-  enemiesStore.subscribe((e) => (currentEnemies = e))();
+  let currentEnemies = get(enemiesStore);
 
   gameBoardStore.update((board) => {
     const newCells = board.cells.map((row) =>
@@ -160,11 +159,8 @@ export function applyHealToCell(x: number, y: number, heal: number) {
 // }
 
 export function getEntityInfo(x: number, y: number) {
-  return derived(
-    gameBoardStore,
-    $board => ({
-      entity: $board.cells[y]?.[x]?.entity,
-      type: $board.cells[y]?.[x]?.content ?? "empty"
-    })
-  );
+  return derived(gameBoardStore, ($board) => ({
+    entity: $board.cells[y]?.[x]?.entity,
+    type: $board.cells[y]?.[x]?.content ?? "empty",
+  }));
 }

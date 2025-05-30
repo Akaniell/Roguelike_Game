@@ -41,9 +41,23 @@ export function addEnemyFromTemplate(template: Enemy, x: number, y: number) {
   enemiesStore.update((enemies) => [...enemies, newEnemy]);
 
   gameBoardStore.update((board) => {
-    board.cells[y][x].content = "enemy";
-    board.cells[y][x].entity = newEnemy;
-    return board;
+    const newCells = board.cells.map((row, rowIndex) =>
+      row.map((cell, colIndex) => {
+        if (rowIndex === y && colIndex === x) {
+          return {
+            ...cell,
+            content: "enemy" as "enemy",
+            entity: newEnemy,
+          };
+        }
+        return cell;
+      })
+    );
+
+    return {
+      ...board,
+      cells: newCells,
+    };
   });
 }
 
@@ -64,8 +78,8 @@ export function moveAllEnemies() {
   let enemies = get(enemiesStore);
   let player = get(playerStore);
 
-  const newCells: Cell[][] = board.cells.map(row =>
-    row.map(cell => ({
+  const newCells: Cell[][] = board.cells.map((row) =>
+    row.map((cell) => ({
       ...cell,
       entity: cell.entity ? { ...cell.entity } : undefined,
     }))
@@ -114,7 +128,7 @@ export function moveAllEnemies() {
       }
 
       if (result.enemyIdToRemove) {
-        enemies = enemies.filter(e => e.id !== result.enemyIdToRemove);
+        enemies = enemies.filter((e) => e.id !== result.enemyIdToRemove);
       }
     } else {
       const strategyName = enemy.moveStrategy ?? "straight";
@@ -139,7 +153,7 @@ export function moveAllEnemies() {
   }
 
   // Удаляем мёртвых врагов из массива
-  enemies = enemies.filter(enemy => {
+  enemies = enemies.filter((enemy) => {
     const cell = findCellByEntityId(newBoard, enemy.id);
     return cell !== null;
   });

@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { currentWaveStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
   import type { Player } from "$lib/Stores/types";
 
-  export let wave: number = 1;
-
   let player: Player;
-  playerStore.subscribe((value) => (player = value));
+  $: playerStore.subscribe((value) => (player = value));
+  let wave: number;
+  $: currentWaveStore.subscribe((value) => (wave = value));
 
   $: hpPercent =
     player && player.maxHp
