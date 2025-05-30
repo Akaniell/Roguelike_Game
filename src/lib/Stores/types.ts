@@ -11,6 +11,7 @@ export interface Player extends Entity {
   elements: string[],
   effects?: StatusEffect[];
   maxHp: number;
+  unlockedSlotsCount: number;
 }
 
 export interface Enemy extends Entity {
@@ -42,4 +43,16 @@ export interface StatusEffect {
   icon?: string; 
   description?: string;
   duration?: number; 
+}
+
+export interface SpellCombination {
+  elements: [string, string]; 
+  spellName: string;
+  description: string;
+  damage?: number;
+  effect?: string; 
+  healing?: number;
+  summon?: string;
+  knockback?: number;
+  duration?: number;
 }

@@ -10,6 +10,7 @@ export const defaultPlayer: Player = {
   elements: [],
   image: "/img/player/player.gif",
   effects: [],
+  unlockedSlotsCount: 2,
 };
 
 export const defaultEnemies: Enemy[] = []; // пустой массив врагов

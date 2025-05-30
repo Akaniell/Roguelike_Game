@@ -117,8 +117,6 @@
     {:else}
       <span>{cell.entity.name}</span>
     {/if}
-  {:else}
-    
   {/if}
 
   <Tooltip

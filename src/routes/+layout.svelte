@@ -40,6 +40,5 @@
     flex: 1;
     border: 3px solid #000000;
     box-sizing: border-box;
-    overflow-y: auto;
   }
 </style>

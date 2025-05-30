@@ -1,6 +1,7 @@
 <script lang="ts">
   import GameBoard from "$lib/components/GameBoard.svelte";
   import PlayerInfo from "$lib/components/PlayerInfo.svelte";
+  import SpellPanel from "$lib/components/SpellPanel.svelte";
 </script>
 
 <div>
@@ -13,7 +14,7 @@
     </div>
   </div>
   <div class="spell-container">
-    a
+    <SpellPanel></SpellPanel>
   </div>
 </div>
 
@@ -27,6 +28,7 @@
   .spell-container{
     height: 25%;
     width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
   }
   .gameboard-container {
     margin-right: 5px;
