@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { currentCellStore } from "$lib/Stores/currentCellStore";
   import type { Cell } from "$lib/Stores/types";
 
   export let cell: Cell;
@@ -20,6 +21,8 @@
 <button
   class="cell"
   on:click={() => onClick(cell)}
+  on:mouseenter={()=>{currentCellStore.set(cell);}}
+  on:mouseleave={()=>{currentCellStore.set(null);}}
   type="button"
   style="filter: {filter}; background-image: url('/img/cell-bg.png')"
 >

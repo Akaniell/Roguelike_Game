@@ -73,8 +73,6 @@
     padding: 1.2rem 1rem 1rem 1rem;
     border-radius: 10px;
     font-size: 1rem;
-    min-width: 270px;
-    max-width: 320px;
     font-family: "Press Start 2P", "VT323", monospace, sans-serif;
   }
   .player-header {
