@@ -10,6 +10,7 @@ export interface Player extends Entity {
   coins: number;
   elements: string[],
   effects?: StatusEffect[];
+  maxHp: number;
 }
 
 export interface Enemy extends Entity {
@@ -17,6 +18,7 @@ export interface Enemy extends Entity {
   moveStrategy? : "straight" | "diagonal" | "zigzag";  
   attackRange: number,
   attackDamage: number,
+  story?: string;
 }
 
 export interface Building extends Entity {}

@@ -5,6 +5,7 @@ export const defaultPlayer: Player = {
   name: "Игрок",
   type: "player",
   hp: 100,
+  maxHp: 100,
   coins: 0,
   elements: [],
   image: "/img/player/player.gif",

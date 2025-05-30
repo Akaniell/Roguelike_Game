@@ -5,6 +5,18 @@
   export let cell: Cell;
   export let onClick: (cell: Cell) => void;
 
+  const filters = [
+    "brightness(0.9) contrast(1.1)",
+    "brightness(1) contrast(1)",
+    "brightness(1.1) contrast(0.9)",
+    "brightness(1) saturate(1.2)",
+    "brightness(0.95) saturate(0.8)",
+    "brightness(1) hue-rotate(10deg)",
+    "brightness(1) hue-rotate(-10deg)",
+  ];
+
+  $: filter = filters[Math.floor(Math.random() * (8)) % filters.length];
+
   let showTooltip = false;
   let tooltipPosition = {
     top: 0,
@@ -93,6 +105,7 @@
   on:mouseleave={hide}
   on:mousemove={handleMouseMove}
   type="button"
+  style="filter: {filter}; background-image: url('/img/cell-bg.png')"
 >
   {#if cell.entity}
     {#if cell.entity?.image}
@@ -105,7 +118,7 @@
       <span>{cell.entity.name}</span>
     {/if}
   {:else}
-    Пусто
+    
   {/if}
 
   <Tooltip

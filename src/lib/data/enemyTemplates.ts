@@ -11,9 +11,10 @@ export const enemyTemplates: Enemy[] = [
     moveStrategy: "straight",
     attackRange: 1,
     attackDamage: 2,
+    story: "Гоблины — мелкие и хитрые существа, которые часто нападают стаями.",
   },
   {
-    id: "0",
+    id: "1",
     name: "Скелет лучник",
     type: "enemy",
     hp: 50,
@@ -22,6 +23,7 @@ export const enemyTemplates: Enemy[] = [
     moveStrategy: "diagonal",
     attackRange: 3,
     attackDamage: 5,
+    story: "Скелеты-лучники — опасные стрелки, которые держатся на расстоянии.",
   },
   {
     id: "zombie",
@@ -33,9 +35,10 @@ export const enemyTemplates: Enemy[] = [
     moveStrategy: "zigzag",
     attackRange: 1,
     attackDamage: 5,
+    story: "Слаймы — слизистые создания, способные быстро регенерировать.",
   },
   {
-    id: "0",
+    id: "2",
     name: "Скелет-воин",
     type: "enemy",
     hp: 100,
@@ -44,9 +47,10 @@ export const enemyTemplates: Enemy[] = [
     moveStrategy: "straight",
     attackRange: 1,
     attackDamage: 10,
+    story: "Скелеты-воины — крепкие бойцы, сражающиеся в ближнем бою.",
   },
   {
-    id: "0",
+    id: "3",
     name: "Королевский слайм",
     type: "enemy",
     hp: 150,
@@ -55,5 +59,6 @@ export const enemyTemplates: Enemy[] = [
     moveStrategy: "zigzag",
     attackRange: 2,
     attackDamage: 20,
+    story: "Королевский слайм — лидер слаймов, обладающий мощной силой и интеллектом.",
   },
 ];
