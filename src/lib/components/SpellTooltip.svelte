@@ -22,7 +22,6 @@
 <style>
   .tooltip {
     background: #222;
-    /* width: 500px; */
     min-width: 200px;
     max-width: 400px;
     border: 1px solid #666;

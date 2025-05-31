@@ -1,7 +1,6 @@
 <script lang="ts">
   import { currentCellStore } from "$lib/Stores/currentCellStore";
   import type { Cell } from "$lib/Stores/types";
-  import { onMount } from "svelte";
 
   export let cell: Cell;
   export let onClick: (cell: Cell) => void;
@@ -16,10 +15,7 @@
     "brightness(1) hue-rotate(-10deg)",
   ];
 
-  let filter: string;
-  onMount(() => {
-    filter = filters[Math.floor(Math.random() * filters.length)];
-  });
+  let filter = filters[Math.floor(Math.random() * filters.length)];
 </script>
 
 <button
@@ -31,15 +27,17 @@
   style="filter: {filter}; background-image: url('/img/cell-bg.png')"
 >
   {#if cell.entity}
-    {#if cell.entity.image}
-      <img
-        src={cell.entity.image}
-        alt={cell.entity.name}
-        class="entity-image"
-      />
-    {:else}
-      <span>{cell.entity.name}</span>
-    {/if}
+    {#key cell.entity.id}
+      {#if cell.entity.image}
+        <img
+          src={cell.entity.image}
+          alt={cell.entity.name}
+          class="entity-image"
+        />
+      {:else}
+        <span>{cell.entity.name}</span>
+      {/if}
+    {/key}
   {/if}
 </button>
 
@@ -52,13 +50,11 @@
     font-size: 10px;
     outline: none;
   }
-
   button.cell:active {
     background: var(--color-button-bg-active);
     border-color: var(--color-cell-border-active, #999);
     box-shadow: inset 1px 1px 0 var(--color-cell-shadow-active, #222);
   }
-
   .entity-image {
     width: 90%;
     max-height: 90%;

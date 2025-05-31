@@ -10,8 +10,8 @@ export const spellCombinations: SpellCombination[] = [
   {
     elements: ["Вода", "Вода"],
     spellName: "Исцеляющий поток",
-    description: "Восстанавливает 15 здоровья союзникам в зоне действия.",
-    healing: 15,
+    description: "Восстанавливает 8 здоровья выбранному существу.",
+    healing: 8,
   },
   {
     elements: ["Земля", "Земля"],

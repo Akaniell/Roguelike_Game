@@ -42,7 +42,7 @@
   {#each $gameBoardStore.cells as row (row[0].y)}
     <div class="row">
       {#each row as cell (cell.x)}
-        <BoardCell {cell} onClick={handleCellClick} />
+        <BoardCell {cell} onClick={handleCellClick}/>
       {/each}
     </div>
   {/each}

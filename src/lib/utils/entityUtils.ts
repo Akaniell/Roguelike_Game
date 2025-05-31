@@ -8,7 +8,6 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
   let coinsReward = 0;
   let enemyIdToRemove: string | null = null;
 
-  // Синхронно получаем актуальные значения стора
   let currentPlayer = get(playerStore);
   let currentEnemies = get(enemiesStore);
 
@@ -30,9 +29,7 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
             playerEntity.hp -= damage;
 
             if (currentPlayer) {
-              console.log("До обновления player:", currentPlayer.elements);
               currentPlayer = { ...currentPlayer, hp: playerEntity.hp };
-              console.log("После обновления player:", currentPlayer.elements);
               playerStore.set(currentPlayer);
             }
 
@@ -90,75 +87,50 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
 }
 
 export function applyHealToCell(x: number, y: number, heal: number) {
+  let currentPlayer = get(playerStore);
+  let currentEnemies = get(enemiesStore);
+
   gameBoardStore.update((board) => {
-    const cell = board.cells[y][x];
+    const newCells = board.cells.map((row) =>
+      row.map((cell) => ({
+        ...cell,
+        entity: cell.entity ? { ...cell.entity } : undefined,
+      }))
+    );
 
-    if (cell.entity && cell.entity.hp > 0) {
-      switch (cell.entity.type) {
-        case "player":
-          playerStore.update((player) => {
-            if (player) {
-              player.hp += heal;
-              if (cell.entity) cell.entity.hp = player.hp;
-            }
-            return { ...player };
-          });
-          break;
-
-        case "enemy":
-          enemiesStore.update((enemies) => {
-            return enemies.map((enemy) => {
-              if (enemy.id === cell.entity?.id) {
-                enemy.hp += heal;
-                cell.entity.hp = enemy.hp;
-                return { ...enemy };
-              }
-              return enemy;
-            });
-          });
-          break;
-
-        default:
-          console.log(
-            `Неизвестный тип сущности (${cell.entity.type}) на клетке (${x}, ${y}).`
-          );
-      }
-      console.log(
-        `Сущности (${cell.entity.name}) на клетке (${x}, ${y}) восстановлено здоровье. HP: ${cell.entity.hp}`
-      );
-    } else {
-      console.log(
-        `В клетке (${x}, ${y}) нет сущности для восстановления здоровья.`
-      );
+    const cell = newCells[y]?.[x];
+    if (!cell || !cell.entity) {
+      return board;
     }
 
-    return board;
+    switch (cell.entity.type) {
+      case "player": {
+        const playerEntity = cell.entity as Player;
+        playerEntity.hp = Math.min(playerEntity.hp + heal, playerEntity.maxHp);
+
+        currentPlayer = { ...currentPlayer, hp: playerEntity.hp };
+        playerStore.set(currentPlayer);
+        break;
+      }
+      case "enemy": {
+        const enemyEntity = cell.entity as Enemy;
+        enemyEntity.hp = Math.min(enemyEntity.hp + heal, enemyEntity.hp + heal);
+
+        currentEnemies = currentEnemies.map((enemy) =>
+          enemy.id === enemyEntity.id ? { ...enemyEntity } : enemy
+        );
+        enemiesStore.set(currentEnemies);
+        break;
+      }
+      default:
+        console.warn(
+          `Неизвестный тип сущности (${cell.entity.type}) в клетке (${x}, ${y}).`
+        );
+    }
+
+    return { ...board, cells: newCells };
   });
 }
-
-// export function getEntityInfo(
-//   x: number,
-//   y: number
-// ): {
-//   entity: Player | Enemy | Building | undefined;
-//   type: "empty" | "player" | "enemy" | "building";
-// } {
-//   let result: {
-//     entity: Player | Enemy | Building | undefined;
-//     type: "empty" | "player" | "enemy" | "building";
-//   } = { entity: undefined, type: "empty" };
-
-//   gameBoardStore.subscribe((board) => {
-//     if (x >= 0 && x < board.width && y >= 0 && y < board.height) {
-//       result = {
-//         entity: board.cells[y][x].entity,
-//         type: board.cells[y][x].content,
-//       };
-//     }
-//   })();
-
-//   return result;
-// }
 
 export function getEntityInfo(x: number, y: number) {
   return derived(gameBoardStore, ($board) => ({
