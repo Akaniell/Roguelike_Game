@@ -1,37 +1,27 @@
 <script lang="ts">
   import { playerStore } from "$lib/Stores/playerStore";
-  import type { Player } from "$lib/Stores/types";
-  import { derived } from "svelte/store";
-  import { onDestroy } from "svelte";
-  import type { SpellCombination } from "$lib/Stores/types";
+  import { selectedElements, selectedSpellName } from "$lib/Stores/spellStore";
   import { spellCombinations } from "$lib/data/spellTemplates";
   import SpellTooltip from "./SpellTooltip.svelte";
-  import { selectedElements, selectedSpellName } from "$lib/Stores/spellStore";
 
   const allElements = ["Огонь", "Вода", "Земля", "Воздух"];
 
-  const playerData = derived(playerStore, ($player: Player | null) => $player);
+  $: currentChosenElements = $playerStore?.elements ?? [];
+  $: unlockedSlotsCount = $playerStore?.unlockedSlotsCount ?? 2;
+  $: currentTurnElements = $selectedElements;
 
-  let currentChosenElements: string[] = [];
-  let currentTurnElements: string[] = [];
-  let unlockedSlotsCount = 2;
+  $: currentSpell = getSpellByElements(currentTurnElements);
 
-  const unsubscribePlayer = playerData.subscribe((player) => {
-    if (player) {
-      currentChosenElements = player.elements ?? [];
-      unlockedSlotsCount = player.unlockedSlotsCount ?? 2;
-    }
-  });
-  onDestroy(() => unsubscribePlayer());
+  let showTooltip = false;
 
-
-  let unsubscribe = selectedElements.subscribe((value) => {
-    currentTurnElements = value;
-  });
-
-  onDestroy(() => {
-    unsubscribe();
-  });
+  function getSpellByElements(elements: string[]) {
+    if (elements.length !== 2) return undefined;
+    const sorted = [...elements].sort();
+    return spellCombinations.find((spell) => {
+      const combSorted = [...spell.elements].sort();
+      return combSorted[0] === sorted[0] && combSorted[1] === sorted[1];
+    });
+  }
 
   function addElement(el: string) {
     if (currentTurnElements.length >= unlockedSlotsCount) return;
@@ -42,26 +32,10 @@
     selectedElements.update((arr) => arr.filter((_, i) => i !== index));
   }
 
-  $: currentSpell = getSpellByElements(currentTurnElements);
-
-  function getSpellByElements(
-    elements: string[]
-  ): SpellCombination | undefined {
-    if (elements.length !== 2) return undefined;
-    const sorted = [...elements].sort();
-    return spellCombinations.find((spell) => {
-      const combSorted = [...spell.elements].sort();
-      return combSorted[0] === sorted[0] && combSorted[1] === sorted[1];
-    });
-  }
-
-  let showTooltip = false;
-
   function onResultClick() {
-    const spell = currentSpell;
-    if (!spell) return;
-
-    selectedSpellName.set(spell.spellName);
+    if (currentSpell) {
+      selectedSpellName.set(currentSpell.spellName);
+    }
   }
 </script>
 
@@ -102,9 +76,7 @@
       on:mouseenter={() => (showTooltip = true)}
       on:mouseleave={() => (showTooltip = false)}
       aria-label={currentSpell?.description ?? "Выберите 2 стихии"}
-      on:click={() => {
-        onResultClick();
-      }}
+      on:click={onResultClick}
       disabled={!currentSpell}
     >
       {#if currentSpell}
@@ -146,9 +118,9 @@
   .slots {
     display: flex;
     align-items: center;
-    font-family: "Press Start 2P", monospace;
+    font-family: var(--font-main);
     font-size: 1rem;
-    color: #eee;
+    color: var(--color-button-text);
     gap: 8px;
   }
 
@@ -156,9 +128,9 @@
     all: unset;
     min-width: 80px;
     height: 40px;
-    background-color: #444;
-    border: 2px solid #666;
-    padding: 0px 5px;
+    background-color: var(--color-button-bg);
+    border: 2px solid var(--color-button-bg);
+    padding: 0 5px;
     border-radius: 6px;
     cursor: pointer;
     user-select: none;
@@ -173,9 +145,9 @@
   }
 
   .slot:disabled {
-    background-color: #111;
-    border-color: #222;
-    color: #444;
+    background-color: var(--color-button-bg-active);
+    border-color: var(--color-button-bg-active);
+    color: #555;
     cursor: not-allowed;
     opacity: 0.6;
     box-shadow: inset 0 0 8px 2px rgba(0, 0, 0, 0.7);
@@ -192,8 +164,8 @@
   }
 
   .slot:hover:not(:disabled) {
-    background-color: #666;
-    border-color: #aaa;
+    background-color: var(--color-button-bg-hover);
+    border-color: var(--color-button-bg-hover);
   }
 
   .slot-element {
@@ -219,10 +191,10 @@
     position: relative;
     min-width: 200px;
     height: 40px;
-    background: #222;
-    border: 2px solid #666;
+    background: var(--color-button-bg);
+    border: 2px solid var(--color-button-bg);
     border-radius: 6px;
-    color: #eee;
+    color: var(--color-button-text);
     padding: 6px 8px;
     display: flex;
     align-items: center;
@@ -240,6 +212,18 @@
     z-index: 10;
   }
 
+  .result-slot:disabled {
+    background-color: var(--color-button-bg-active);
+    border-color: var(--color-button-bg-active);
+    color: #555;
+    cursor: not-allowed;
+  }
+
+  .result-slot:not(:disabled):hover {
+    background-color: var(--color-button-bg-hover);
+    border-color: var(--color-button-bg-hover);
+  }
+
   .buttons {
     display: flex;
     gap: 12px;
@@ -248,34 +232,28 @@
   }
 
   .element-button {
-    width: auto;
-    height: auto;
     padding: 10px 16px;
     font-size: 0.85rem;
-    background-color: #444;
-    border-color: #666;
+    background-color: var(--color-button-bg);
+    border: 2px solid var(--color-button-bg);
     border-radius: 6px;
-    box-shadow: none;
-    text-shadow: none;
+    color: var(--color-button-text);
+    cursor: pointer;
+    user-select: none;
     transition:
       background-color 0.2s,
       border-color 0.2s;
-    color: #eee;
-    cursor: pointer;
-    user-select: none;
   }
 
-  .element-button:disabled,
-  .result-slot:disabled {
-    background-color: #222;
-    border-color: #333;
+  .element-button:disabled {
+    background-color: var(--color-button-bg-active);
+    border-color: var(--color-button-bg-active);
     color: #555;
     cursor: not-allowed;
   }
 
-  .element-button:not(:disabled):hover,
-  .result-slot:not(:disabled):hover {
-    background-color: #666;
-    border-color: #aaa;
+  .element-button:not(:disabled):hover {
+    background-color: var(--color-button-bg-hover);
+    border-color: var(--color-button-bg-hover);
   }
 </style>

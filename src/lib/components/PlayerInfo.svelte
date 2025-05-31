@@ -1,28 +1,22 @@
 <script lang="ts">
   import { currentWaveStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
-  import type { Player } from "$lib/Stores/types";
-
-  let player: Player;
-  $: playerStore.subscribe((value) => (player = value));
-  let wave: number;
-  $: currentWaveStore.subscribe((value) => (wave = value));
 
   $: hpPercent =
-    player && player.maxHp
-      ? Math.max(0, Math.min(100, (player.hp / player.maxHp) * 100))
+    $playerStore && $playerStore.maxHp
+      ? Math.max(0, Math.min(100, ($playerStore.hp / $playerStore.maxHp) * 100))
       : 0;
 
-  $: effects = player?.effects ?? [];
+  $: effects = $playerStore?.effects ?? [];
 </script>
 
 <div class="player-info">
   <div class="player-header">
-    <img class="avatar" src={player?.image} alt="Аватар" />
+    <img class="avatar" src={$playerStore?.image} alt="Аватар" />
     <div>
-      <div class="player-name">{player?.name}</div>
+      <div class="player-name">{$playerStore?.name}</div>
       <div class="player-elements">
-        {#each player?.elements ?? [] as el}
+        {#each $playerStore?.elements ?? [] as el}
           <span class="element">{el}</span>
         {/each}
       </div>
@@ -33,17 +27,17 @@
       <span class="stat-label">Здоровье:</span>
       <span class="hp-bar">
         <span class="hp-fill" style="width: {hpPercent}%;"></span>
-        <span class="hp-text">{player?.hp} / {player?.maxHp}</span>
+        <span class="hp-text">{$playerStore?.hp} / {$playerStore?.maxHp}</span>
       </span>
     </div>
     <div class="stat-row">
       <span class="stat-label">Монеты:</span>
-      <span class="coin-value">{player?.coins}</span>
+      <span class="coin-value">{$playerStore?.coins}</span>
       <img src="/img/coin.gif" alt="Монета" class="coin-gif" />
     </div>
     <div class="stat-row">
       <span class="stat-label">Волна:</span>
-      <span>{wave}</span>
+      <span>{$currentWaveStore}</span>
     </div>
   </div>
   <div class="player-effects">
@@ -70,11 +64,10 @@
 
 <style>
   .player-info {
-    color: #eee;
+    color: var(--color-button-text);
     padding: 1.2rem 1rem 1rem 1rem;
     border-radius: 10px;
     font-size: 1rem;
-    font-family: "Press Start 2P", "VT323", monospace, sans-serif;
   }
   .player-header {
     display: flex;
@@ -89,14 +82,13 @@
     border: 2px solid #444;
     background: #111;
     object-fit: cover;
-    image-rendering: pixelated;
   }
   .player-name {
     font-size: 1.1rem;
     font-weight: bold;
     margin-bottom: 0.2rem;
     letter-spacing: 1px;
-    color: #fff;
+    color: var(--color-button-text);
     text-shadow:
       1px 1px 0 #000,
       0 0 2px #000;
@@ -131,7 +123,7 @@
   .stat-label {
     min-width: 85px;
     font-weight: bold;
-    color: #ffffff;
+    color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
     font-size: 0.95em;
   }
@@ -156,12 +148,15 @@
   }
   .hp-text {
     position: absolute;
-    left: 0; right: 0; top: 0; bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 0.8rem;
-    color: #fff;
+    color: var(--color-button-text);
     text-shadow: 0 0 3px #000;
     pointer-events: none;
     user-select: none;
@@ -170,7 +165,7 @@
   .coin-value {
     min-width: 16px;
     text-align: right;
-    color: #ffffff;
+    color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
     font-weight: bold;
   }

@@ -6,22 +6,34 @@
   import "$lib/utils/gameController.ts";
 </script>
 
-<div style="height: 100vh">
+<div class="page-container">
   <div class="battle-container">
-    <div class="info-container">
-      <div class="player-info"><PlayerInfo></PlayerInfo></div>
-      <div class="cell-info"><CellInfo></CellInfo></div>
-    </div>
-    <div class="gameboard-container">
-      <GameBoard></GameBoard>
-    </div>
+    <aside class="info-container">
+      <div class="player-info">
+        <PlayerInfo />
+      </div>
+      <div class="cell-info">
+        <CellInfo />
+      </div>
+    </aside>
+
+    <main class="gameboard-container">
+      <GameBoard />
+    </main>
   </div>
-  <div class="spell-container">
-    <SpellPanel></SpellPanel>
-  </div>
+
+  <section class="spell-container">
+    <SpellPanel />
+  </section>
 </div>
 
 <style>
+  .page-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
   .battle-container {
     margin: 5px;
     width: 100%;
@@ -29,11 +41,13 @@
     display: flex;
     justify-content: space-between;
   }
-  .spell-container{
+
+  .spell-container {
     height: 25%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
   }
+
   .gameboard-container {
     margin-right: 5px;
     margin-top: 5px;
@@ -43,12 +57,17 @@
     align-items: center;
     flex-wrap: wrap;
   }
-  .info-container{
+
+  .info-container {
     width: 25%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .info-container div {
-    height: 50%;
+
+  .info-container > div {
+    flex: 1;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
   }

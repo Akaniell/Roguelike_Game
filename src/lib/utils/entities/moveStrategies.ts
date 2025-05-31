@@ -1,5 +1,6 @@
 import type { Enemy, GameBoard, Cell } from "$lib/Stores/types";
 import { findCellByEntityId } from "../board/boardUtils";
+import { findPlayerCell } from "./playerUtils";
 
 export type MoveStrategy = (
   enemy: Enemy,
@@ -11,16 +12,7 @@ export const moveStraight: MoveStrategy = (enemy, gameBoard) => {
   const enemyCell = findCellByEntityId(gameBoard, enemy.id);
   if (!enemyCell) return null;
 
-  let playerCell: Cell | null = null;
-  for (const row of gameBoard.cells) {
-    for (const cell of row) {
-      if (cell.content === "player") {
-        playerCell = cell;
-        break;
-      }
-    }
-    if (playerCell) break;
-  }
+  const playerCell = findPlayerCell(gameBoard);
   if (!playerCell) return null;
 
   const dx = playerCell.x - enemyCell.x;
@@ -43,16 +35,7 @@ export const moveDiagonal: MoveStrategy = (enemy, gameBoard) => {
   const enemyCell = findCellByEntityId(gameBoard, enemy.id);
   if (!enemyCell) return null;
 
-  let playerCell: Cell | null = null;
-  for (const row of gameBoard.cells) {
-    for (const cell of row) {
-      if (cell.content === "player") {
-        playerCell = cell;
-        break;
-      }
-    }
-    if (playerCell) break;
-  }
+  const playerCell = findPlayerCell(gameBoard);
   if (!playerCell) return null;
 
   const dx = playerCell.x - enemyCell.x;
@@ -69,22 +52,12 @@ export const moveZigzag: MoveStrategy = (enemy, gameBoard) => {
   const enemyCell = findCellByEntityId(gameBoard, enemy.id);
   if (!enemyCell) return null;
 
-  let playerCell: Cell | null = null;
-  for (const row of gameBoard.cells) {
-    for (const cell of row) {
-      if (cell.content === "player") {
-        playerCell = cell;
-        break;
-      }
-    }
-    if (playerCell) break;
-  }
+  const playerCell = findPlayerCell(gameBoard);
   if (!playerCell) return null;
 
   const dx = playerCell.x - enemyCell.x;
   const dy = playerCell.y - enemyCell.y;
 
-  // Простая логика зигзага: чередуем движение по X и Y
   const moveAlongX = (enemyCell.x + enemyCell.y) % 2 === 0;
 
   let stepX = 0;

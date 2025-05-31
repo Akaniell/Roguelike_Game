@@ -1,60 +1,57 @@
 <script lang="ts">
   import { currentCellStore } from "$lib/Stores/currentCellStore";
-  import type { Cell } from "$lib/Stores/types";
-
-  let currentCell: Cell | null = null;
-  currentCellStore.subscribe((value) => (currentCell = value));
 </script>
 
-{#if currentCell}
+{#if $currentCellStore}
   <div class="cell-info">
     <div class="header">
-      {#if currentCell.entity?.image}
+      {#if $currentCellStore.entity?.image}
         <img
-          src={currentCell.entity.image}
-          alt={currentCell.entity.name}
+          src={$currentCellStore.entity.image}
+          alt={$currentCellStore.entity.name}
           class="avatar"
         />
       {/if}
       <div class="title">
-        <div class="name">{currentCell.entity?.name ?? "Пустая клетка"}</div>
-        <!-- <div class="type">{currentCell.entity?.type ?? currentCell.content}</div> -->
+        <div class="name">
+          {$currentCellStore.entity?.name ?? "Пустая клетка"}
+        </div>
       </div>
     </div>
 
-    {#if currentCell.entity}
+    {#if $currentCellStore.entity}
       <div class="hp-row">
         <span class="label">Здоровье:</span>
-        <span class="hp-text">{currentCell.entity.hp}</span>
+        <span class="hp-text">{$currentCellStore.entity.hp}</span>
       </div>
 
-      {#if currentCell.entity.type === "player" && "coins" in currentCell.entity}
+      {#if $currentCellStore.entity.type === "player" && "coins" in $currentCellStore.entity}
         <div class="stat-row">
           <span class="label">Монеты:</span>
-          <span>{currentCell.entity.coins}</span>
+          <span>{$currentCellStore.entity.coins}</span>
           <img src="/img/coin.gif" alt="Монета" class="coin-gif" />
         </div>
       {/if}
 
-      {#if currentCell.entity.type === "enemy" && "coinsReward" in currentCell.entity}
+      {#if $currentCellStore.entity.type === "enemy" && "coinsReward" in $currentCellStore.entity}
         <div class="stat-row">
           <span class="label">Награда:</span>
-          <span>{currentCell.entity.coinsReward}</span>
+          <span>{$currentCellStore.entity.coinsReward}</span>
           <img src="/img/coin.gif" alt="Монета" class="coin-gif" />
         </div>
       {/if}
 
-      {#if currentCell.entity?.type === "enemy" && "attackDamage" in currentCell.entity}
+      {#if $currentCellStore.entity?.type === "enemy" && "attackDamage" in $currentCellStore.entity}
         <div class="stat-row">
           <span class="label">Наносимый урон:</span>
-          <span>{currentCell.entity.attackDamage}</span>
+          <span>{$currentCellStore.entity.attackDamage}</span>
         </div>
       {/if}
 
-      {#if currentCell.entity?.type === "enemy" && "attackRange" in currentCell.entity}
+      {#if $currentCellStore.entity?.type === "enemy" && "attackRange" in $currentCellStore.entity}
         <div class="stat-row">
           <span class="label">Радиус атаки:</span>
-          <span>{currentCell.entity.attackRange}</span>
+          <span>{$currentCellStore.entity.attackRange}</span>
         </div>
       {/if}
     {:else}
@@ -69,10 +66,9 @@
 
 <style>
   .cell-info {
-    color: #eee;
+    color: var(--color-button-text);
     padding: 1rem;
     border-radius: 10px;
-    font-family: "Press Start 2P", monospace;
     font-size: 0.9rem;
     min-width: 270px;
   }
@@ -89,7 +85,6 @@
     border: 2px solid #444;
     background: #111;
     object-fit: cover;
-    image-rendering: pixelated;
   }
   .title {
     display: flex;
@@ -98,7 +93,7 @@
   .name {
     font-weight: bold;
     font-size: 1.1rem;
-    color: #fff;
+    color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
   }
   .hp-row,
@@ -111,7 +106,7 @@
   .label {
     min-width: 85px;
     font-weight: bold;
-    color: #fff;
+    color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
   }
   .hp-text {
@@ -119,7 +114,7 @@
     justify-content: center;
     align-items: center;
     font-size: 0.8rem;
-    color: #fff;
+    color: var(--color-button-text);
     text-shadow: 0 0 3px #000;
     pointer-events: none;
     user-select: none;
@@ -130,6 +125,5 @@
     height: 16px;
     object-fit: contain;
     margin-left: 4px;
-    image-rendering: pixelated;
   }
 </style>

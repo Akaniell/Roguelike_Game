@@ -1,30 +1,12 @@
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
-import type { Building, Cell, Enemy, GameBoard, Player } from "$lib/Stores/types";
+import type {
+  Building,
+  Cell,
+  Enemy,
+  GameBoard,
+  Player,
+} from "$lib/Stores/types";
 import { applyDamageToCell, applyHealToCell } from "../entityUtils";
-
-export function placeEntityOnBoard(
-  entity: Enemy | Player | Building,
-  x: number,
-  y: number
-) {
-  gameBoardStore.update((board) => {
-    board.cells[y][x].content = entity.type as
-      | "empty"
-      | "player"
-      | "enemy"
-      | "building";
-    board.cells[y][x].entity = entity;
-    return board;
-  });
-}
-
-export function removeEntityFromBoard(x: number, y: number) {
-  gameBoardStore.update((board) => {
-    board.cells[y][x].content = "empty";
-    board.cells[y][x].entity = undefined;
-    return board;
-  });
-}
 
 export function swapEntities(
   cell1X: number,
@@ -85,8 +67,10 @@ export function handleCellAction(
   }
 }
 
-// Вспомогательная функция поиска клетки с сущностью по id
-export function findCellByEntityId(board: GameBoard, entityId: string): Cell | null {
+export function findCellByEntityId(
+  board: GameBoard,
+  entityId: string
+): Cell | null {
   for (const row of board.cells) {
     for (const cell of row) {
       if (cell.entity?.id === entityId) {
@@ -118,9 +102,8 @@ export function swapEntitiesInBoard(
     return board;
   }
 
-  // Создаём глубокую копию board.cells, чтобы не мутировать оригинал
-  const newCells = board.cells.map(row =>
-    row.map(cell => ({
+  const newCells = board.cells.map((row) =>
+    row.map((cell) => ({
       ...cell,
       entity: cell.entity ? { ...cell.entity } : undefined,
     }))
@@ -153,8 +136,8 @@ export function applyDamageToCellInBoard(
   let coinsReward = 0;
   let enemyIdToRemove: string | undefined;
 
-  const newCells = board.cells.map(row =>
-    row.map(cell => ({
+  const newCells = board.cells.map((row) =>
+    row.map((cell) => ({
       ...cell,
       entity: cell.entity ? { ...cell.entity } : undefined,
     }))
@@ -171,7 +154,6 @@ export function applyDamageToCellInBoard(
           const playerEntity = cell.entity as Player;
           playerEntity.hp -= damage;
 
-          // Обновляем игрока в сторе
           updatedPlayer = { ...playerEntity };
 
           if (playerEntity.hp <= 0) {

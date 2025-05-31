@@ -6,16 +6,16 @@
   const elements = ["Земля", "Огонь", "Вода", "Воздух"];
 
   const story = [
-    ...lore.slice(0, 4),       // 0..3
-    "Выбери первую стихию:",   // 4 - текст + далее
-    "",                        // 5 - выбор первой стихии (кнопки)
-    "",                        // 6 - рассказ 1 стихии, абзац 1
-    "",                        // 7 - рассказ 1 стихии, абзац 2
-    "Выбери вторую стихию:",   // 8 - текст + далее
-    "",                        // 9 - выбор второй стихии (кнопки)
-    "",                        // 10 - рассказ 2 стихии, абзац 1
-    "",                        // 11 - рассказ 2 стихии, абзац 2
-    ...lore.slice(4),          // 12..13 - заключение
+    ...lore.slice(0, 4),
+    "Выбери первую стихию:",
+    "",
+    "",
+    "",
+    "Выбери вторую стихию:",
+    "",
+    "",
+    "",
+    ...lore.slice(4),
   ];
 
   let step = 0;
@@ -23,21 +23,19 @@
   let isTransitioning = false;
 
   function nextStep() {
-    if (step < story.length - 1) {
-      step++;
-    }
+    if (step < story.length - 1) step++;
   }
 
   function selectElement(element: string) {
     if (selectedElements.length === 0) {
       selectedElements = [element];
-      step = 6; // рассказ о первой стихии
+      step = 6;
     } else if (
       selectedElements.length === 1 &&
       !selectedElements.includes(element)
     ) {
       selectedElements = [...selectedElements, element];
-      step = 10; // рассказ о второй стихии
+      step = 10;
     }
   }
 
@@ -52,7 +50,7 @@
 
     setTimeout(() => {
       goto("/battle");
-    }, 400); // время совпадает с длительностью CSS-перехода
+    }, 400);
   }
 </script>
 
@@ -72,7 +70,9 @@
       <button on:click={() => (step === 7 ? (step = 8) : step++)}>Далее</button>
     {:else if step === 10 || step === 11}
       <p>{elementStories[selectedElements[1]][step - 10]}</p>
-      <button on:click={() => (step === 11 ? (step = 12) : step++)}>Далее</button>
+      <button on:click={() => (step === 11 ? (step = 12) : step++)}
+        >Далее</button
+      >
     {:else if step >= 12}
       <p>{story[step]}</p>
       {#if step === story.length - 1}
@@ -128,5 +128,8 @@
     font-weight: bold;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: rgba(255 255 255 / 0.2);
   }
 </style>

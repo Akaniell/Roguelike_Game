@@ -4,9 +4,7 @@
 
   const noSidebarPaths = ["/", "/intro"];
 
-  $: currentPath = $page.url.pathname;
-  $: showSidebar = !noSidebarPaths.includes(currentPath);
-
+  $: showSidebar = !noSidebarPaths.includes($page.url.pathname);
 </script>
 
 <div class="container">
@@ -29,16 +27,20 @@
     background-position: center center;
     background-size: auto 100%;
   }
-  .sidebar-container {
+
+  .sidebar-container,
+  .page-container {
     border: 3px solid #000000;
+    box-sizing: border-box;
+  }
+
+  .sidebar-container {
     flex: 0 0 25%;
     max-width: 25%;
     min-width: 25%;
-    box-sizing: border-box;
   }
+
   .page-container {
     flex: 1;
-    border: 3px solid #000000;
-    box-sizing: border-box;
   }
 </style>

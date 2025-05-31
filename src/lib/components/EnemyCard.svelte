@@ -1,10 +1,12 @@
 <script lang="ts">
-  export let name: string;
-  export let image: string;
-  export let hp: number;
-  export let attackDamage: number;
-  export let coinsReward: number;
-  export let story: string;
+  import type { Enemy } from "$lib/Stores/types";
+
+  export let name: Enemy["name"];
+  export let image: Enemy["image"];
+  export let hp: Enemy["hp"];
+  export let attackDamage: Enemy["attackDamage"];
+  export let coinsReward: Enemy["coinsReward"];
+  export let story: Enemy["story"];
 </script>
 
 <div class="enemy-card">
@@ -23,11 +25,11 @@
 
 <style>
   .enemy-card {
-    border: 2px solid #444;
+    border: 2px solid var(--color-button-bg);
     border-radius: 8px;
     padding: 1rem;
-    background-color: #222;
-    color: #eee;
+    background-color: var(--color-button-bg);
+    color: var(--color-button-text);
     width: 250px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
     display: flex;

@@ -1,32 +1,21 @@
 <script lang="ts">
   import BoardCell from "./BoardCell.svelte";
   import DebugControls from "./DebugControls.svelte";
-  import { currentWaveStore, gameBoardStore } from "$lib/Stores/gameBoardStore";
+  import { gameBoardStore, currentWaveStore } from "$lib/Stores/gameBoardStore";
   import { playerStore } from "$lib/Stores/playerStore";
-  import type {
-    Cell,
-    GameBoard,
-    Player,
-    SpellCombination,
-  } from "$lib/Stores/types";
-  import { handleCellAction, swapEntities } from "$lib/utils/board/boardUtils";
   import { selectedElements, selectedSpellName } from "$lib/Stores/spellStore";
   import { spellCombinations } from "$lib/data/spellTemplates";
   import { enemiesStore } from "$lib/Stores/enemiesStore";
+  import type { Cell, SpellCombination } from "$lib/Stores/types";
+  import { handleCellAction, swapEntities } from "$lib/utils/board/boardUtils";
 
-  let gameBoard: GameBoard;
-  let player: Player;
-  let currentSelectedSpellName: string | null = null;
-
-  $: gameBoardStore.subscribe((value) => (gameBoard = value));
-  $: playerStore.subscribe((value) => (player = value));
-  $: selectedSpellName.subscribe((value) => (currentSelectedSpellName = value));
+  $: player = $playerStore;
 
   let activeAction: string | null = null;
   let firstCell: { x: number; y: number } | null = null;
 
   function handleCellClick(cell: Cell) {
-    if (!currentSelectedSpellName) {
+    if (!$selectedSpellName) {
       if (activeAction === "move") {
         if (!firstCell) {
           firstCell = { x: cell.x, y: cell.y };
@@ -41,11 +30,12 @@
       }
       return;
     }
+
     const spell = spellCombinations.find(
-      (s) => s.spellName === currentSelectedSpellName
+      (s) => s.spellName === $selectedSpellName
     );
     if (!spell) {
-      console.warn("Заклинание не найдено:", currentSelectedSpellName);
+      console.warn("Заклинание не найдено:", $selectedSpellName);
       return;
     }
     applySpellOnCell(spell, cell);
@@ -55,13 +45,12 @@
   function applySpellOnCell(spell: SpellCombination, cell: Cell) {
     console.log(`Применяем заклинание "${spell.spellName}" на клетку`, cell);
     selectedElements.set([]);
+
+    // Здесь можно использовать реактивные переменные enemies и currentWave
+    console.log("Текущий список врагов:", $enemiesStore);
+    console.log("Текущая волна:", $currentWaveStore);
+
     // TODO: Реализовать механику применения заклинания
-    enemiesStore.subscribe((enemies) => {
-      console.log("Текущий список врагов:", enemies);
-    });
-    currentWaveStore.subscribe((wave)=>{
-      console.log(wave);
-    })
   }
 
   function setActiveAction(action: string | null) {
@@ -71,7 +60,7 @@
 </script>
 
 <div class="gameboard">
-  {#each gameBoard.cells as row (row[0].y)}
+  {#each $gameBoardStore.cells as row (row[0].y)}
     <div class="row">
       {#each row as cell (cell.x)}
         <BoardCell {cell} onClick={handleCellClick} />

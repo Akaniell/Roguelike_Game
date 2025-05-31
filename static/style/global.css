@@ -1,10 +1,25 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-link: #66ccff;
+  --color-link-hover: #3a3a3a;
+  --color-link-active: #1e1e1e;
+  --color-button-bg: #2c2c2c;
+  --color-button-bg-hover: #3a3a3a;
+  --color-button-bg-active: #1e1e1e;
+  --color-button-text: #f5f5f5;
+  --color-button-shadow: #000000;
+  --font-main: "Press Start 2P", cursive, monospace;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -14,9 +29,9 @@ html, body {
 }
 
 body {
-  font-family: "Press Start 2P", cursive, monospace;
-  background-color: #ffffff;
-  color: #000000;
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   image-rendering: pixelated;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
@@ -30,7 +45,7 @@ canvas {
 }
 
 a {
-  color: #66ccff;
+  color: var(--color-link);
   text-decoration: none;
 }
 
@@ -38,34 +53,37 @@ a:hover {
   text-decoration: underline;
 }
 
-a, button {
+a,
+button {
   width: 250px;
   height: 65px;
-  background: #2c2c2c;
+  background: var(--color-button-bg);
   border-radius: 0;
-  border: 2px solid #2c2c2c;
+  border: 2px solid var(--color-button-bg);
   justify-content: center;
   align-items: center;
   display: inline-flex;
-  color: #f5f5f5;
+  color: var(--color-button-text);
   font-size: 24px;
   cursor: pointer;
-  font-family: "Press Start 2P", cursive, monospace;
+  font-family: var(--font-main);
   user-select: none;
-  box-shadow: 4px 4px 0 #000;
+  box-shadow: 4px 4px 0 var(--color-button-shadow);
   image-rendering: pixelated;
-  text-shadow: 1px 1px 0 #000;
+  text-shadow: 1px 1px 0 var(--color-button-shadow);
   transition: background-color 0.1s ease;
   text-align: center;
 }
 
-a:hover, button:hover {
-  background: #3a3a3a;
-  border-color: #3a3a3a;
+a:hover,
+button:hover {
+  background: var(--color-button-bg-hover);
+  border-color: var(--color-button-bg-hover);
 }
 
-a:active, button:active {
-  background: #1e1e1e;
-  border-color: #1e1e1e;
-  box-shadow: inset 2px 2px 0 #000;
+a:active,
+button:active {
+  background: var(--color-button-bg-active);
+  border-color: var(--color-button-bg-active);
+  box-shadow: inset 2px 2px 0 var(--color-button-shadow);
 }

@@ -31,6 +31,4 @@ export const wavesTemplates: Enemy[][] = [
     { ...enemyTemplates[2], id: "wave4_slime1" },
     { ...enemyTemplates[2], id: "wave4_slime2" },
   ],
-
-  // И так далее...
 ];

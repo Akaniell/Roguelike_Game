@@ -13,7 +13,7 @@
 <style>
   p {
     font-size: 48px;
-    color: white;
+    color: var(--color-button-text);
     margin: 0;
     text-shadow:
       -2px -2px 0 #000,

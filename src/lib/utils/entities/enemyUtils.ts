@@ -6,30 +6,11 @@ import { get } from "svelte/store";
 import {
   applyDamageToCellInBoard,
   findCellByEntityId,
-  swapEntities,
   swapEntitiesInBoard,
 } from "../board/boardUtils";
-import { applyDamageToCell } from "../entityUtils";
 import { createEnemyFromTemplate, createRandomEnemy } from "./enemyFactory";
 import * as moveStrategies from "./moveStrategies";
 import { playerStore } from "$lib/Stores/playerStore";
-
-// export function addEnemy(name: string, hp: number, image: string, moveStrategy: "straight" | "diagonal" | "zigzag") {
-//   let type = "enemy" as "player" | "enemy" | "building";
-//   let coinsReward = 1;
-//   enemiesStore.update((enemies) => {
-//     const newEnemy = {
-//       id: crypto.randomUUID(),
-//       name,
-//       type,
-//       hp,
-//       coinsReward,
-//       image,
-//       moveStrategy,
-//     };
-//     return [...enemies, newEnemy];
-//   });
-// }
 
 export function removeEnemy(id: string) {
   enemiesStore.update((enemies) => enemies.filter((enemy) => enemy.id !== id));
@@ -67,9 +48,23 @@ export function addRandomEnemy(x: number, y: number) {
   enemiesStore.update((enemies) => [...enemies, newEnemy]);
 
   gameBoardStore.update((board) => {
-    board.cells[y][x].content = "enemy";
-    board.cells[y][x].entity = newEnemy;
-    return board;
+    const newCells = board.cells.map((row, rowIndex) =>
+      row.map((cell, colIndex) => {
+        if (rowIndex === y && colIndex === x) {
+          return {
+            ...cell,
+            content: "enemy" as "enemy",
+            entity: newEnemy,
+          };
+        }
+        return cell;
+      })
+    );
+
+    return {
+      ...board,
+      cells: newCells,
+    };
   });
 }
 
@@ -114,7 +109,6 @@ export function moveAllEnemies() {
     );
 
     if (dist <= (enemy.attackRange ?? 1)) {
-      // Атакуем игрока
       const result = applyDamageToCellInBoard(
         newBoard,
         playerCell.x,
@@ -151,8 +145,6 @@ export function moveAllEnemies() {
       }
     }
   }
-
-  // Удаляем мёртвых врагов из массива
   enemies = enemies.filter((enemy) => {
     const cell = findCellByEntityId(newBoard, enemy.id);
     return cell !== null;

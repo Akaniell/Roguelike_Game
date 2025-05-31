@@ -1,7 +1,7 @@
-import type { Player, Enemy, GameBoard } from "../Stores/types";
+import type { Player, Enemy, GameBoard, Cell } from "../Stores/types";
 
 export const defaultPlayer: Player = {
-  id: '1',
+  id: "1",
   name: "Игрок",
   type: "player",
   hp: 100,
@@ -13,20 +13,31 @@ export const defaultPlayer: Player = {
   unlockedSlotsCount: 2,
 };
 
-export const defaultEnemies: Enemy[] = []; // пустой массив врагов
+export const defaultEnemies: Enemy[] = [];
 
-export const defaultGameBoard: GameBoard = {
-  width: 9,
-  height: 7,
-  cells: Array(7)
-    .fill(null)
-    .map((_, y) =>
-      Array(9)
-        .fill(null)
-        .map((_, x) => ({ x, y, content: "empty" }))
-    ),
-};
+function createDefaultGameBoard(): GameBoard {
+  const width = 9;
+  const height = 7;
 
-// Добавим игрока на игровое поле по умолчанию
-defaultGameBoard.cells[3][0].content = "player";
-defaultGameBoard.cells[3][0].entity = { ...defaultPlayer };
+  const cells: Cell[][] = Array.from({ length: height }, (_, y) =>
+    Array.from({ length: width }, (_, x) => ({
+      x,
+      y,
+      content: "empty",
+    }))
+  );
+
+  cells[3][0] = {
+    ...cells[3][0],
+    content: "player",
+    entity: { ...defaultPlayer },
+  };
+
+  return {
+    width,
+    height,
+    cells,
+  };
+}
+
+export const defaultGameBoard = createDefaultGameBoard();

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { currentCellStore } from "$lib/Stores/currentCellStore";
   import type { Cell } from "$lib/Stores/types";
+  import { onMount } from "svelte";
 
   export let cell: Cell;
   export let onClick: (cell: Cell) => void;
@@ -15,20 +16,27 @@
     "brightness(1) hue-rotate(-10deg)",
   ];
 
-  $: filter = filters[Math.floor(Math.random() * filters.length)];
+  let filter: string;
+  onMount(() => {
+    filter = filters[Math.floor(Math.random() * filters.length)];
+  });
 </script>
 
 <button
   class="cell"
   on:click={() => onClick(cell)}
-  on:mouseenter={()=>{currentCellStore.set(cell);}}
-  on:mouseleave={()=>{currentCellStore.set(null);}}
+  on:mouseenter={() => currentCellStore.set(cell)}
+  on:mouseleave={() => currentCellStore.set(null)}
   type="button"
   style="filter: {filter}; background-image: url('/img/cell-bg.png')"
 >
   {#if cell.entity}
-    {#if cell.entity?.image}
-      <img src={cell.entity.image} alt={cell.entity.name} class="entity-image" />
+    {#if cell.entity.image}
+      <img
+        src={cell.entity.image}
+        alt={cell.entity.name}
+        class="entity-image"
+      />
     {:else}
       <span>{cell.entity.name}</span>
     {/if}
@@ -40,25 +48,19 @@
     position: relative;
     width: 80px;
     height: 80px;
-    background: #5e5e5e;
-    border: 2px solid #333;
-    box-shadow: inset 2px 2px 0 #555;
-    font-family: "Press Start 2P", cursive, monospace;
+    box-shadow: inset 2px 2px 0 var(--color-cell-shadow, #555);
     font-size: 10px;
-    color: #eee;
-    image-rendering: pixelated;
-    cursor: pointer;
-    user-select: none;
+    outline: none;
   }
 
   button.cell:active {
-    background: #555;
-    border-color: #999;
-    box-shadow: inset 1px 1px 0 #222;
+    background: var(--color-button-bg-active);
+    border-color: var(--color-cell-border-active, #999);
+    box-shadow: inset 1px 1px 0 var(--color-cell-shadow-active, #222);
   }
 
   .entity-image {
-    width: 100%;
-    max-height: 100%;
+    width: 90%;
+    max-height: 90%;
   }
 </style>
