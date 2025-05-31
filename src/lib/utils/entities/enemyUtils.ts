@@ -1,4 +1,3 @@
-//enemyUtils.ts
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import type { Cell, Enemy, GameBoard } from "$lib/Stores/types";
@@ -12,38 +11,8 @@ import { createEnemyFromTemplate, createRandomEnemy } from "./enemyFactory";
 import * as moveStrategies from "./moveStrategies";
 import { playerStore } from "$lib/Stores/playerStore";
 
-export function removeEnemy(id: string) {
-  enemiesStore.update((enemies) => enemies.filter((enemy) => enemy.id !== id));
-}
-
 export function addEnemyFromTemplate(template: Enemy, x: number, y: number) {
   const newEnemy = createEnemyFromTemplate(template);
-
-  enemiesStore.update((enemies) => [...enemies, newEnemy]);
-
-  gameBoardStore.update((board) => {
-    const newCells = board.cells.map((row, rowIndex) =>
-      row.map((cell, colIndex) => {
-        if (rowIndex === y && colIndex === x) {
-          return {
-            ...cell,
-            content: "enemy" as "enemy",
-            entity: newEnemy,
-          };
-        }
-        return cell;
-      })
-    );
-
-    return {
-      ...board,
-      cells: newCells,
-    };
-  });
-}
-
-export function addRandomEnemy(x: number, y: number) {
-  const newEnemy = createRandomEnemy();
 
   enemiesStore.update((enemies) => [...enemies, newEnemy]);
 
