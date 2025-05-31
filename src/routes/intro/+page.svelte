@@ -2,6 +2,7 @@
   import { goto } from "$app/navigation";
   import { playerStore } from "$lib/Stores/playerStore";
   import { lore, elementStories } from "$lib/data/story";
+  import { refreshPlayerEntityInBoard } from "$lib/utils/entities/playerUtils";
 
   const elements = ["Земля", "Огонь", "Вода", "Воздух"];
 
@@ -45,6 +46,8 @@
       elements: selectedElements,
       hp: 100,
     }));
+
+    refreshPlayerEntityInBoard();
 
     isTransitioning = true;
 

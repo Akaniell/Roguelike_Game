@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { wavesTemplates } from "$lib/data/wavesTemplates";
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { currentWaveStore, gameBoardStore } from "$lib/Stores/gameBoardStore";
@@ -5,12 +6,14 @@ import { createEnemyFromTemplate } from "./entities/enemyFactory";
 import { addEnemyFromTemplate } from "./entities/enemyUtils";
 
 enemiesStore.subscribe((enemies) => {
-  if (enemies.length === 0 && localStorage.getItem("currentWave") !== "0") {
-    currentWaveStore.update((n) => {
-      const newWave = n + 1;
-      spawnWave(newWave);
-      return newWave;
-    });
+  if(browser){
+    if (enemies.length === 0 && localStorage.getItem("currentWave") !== "0") {
+      currentWaveStore.update((n) => {
+        const newWave = n + 1;
+        spawnWave(newWave);
+        return newWave;
+      });
+    }
   }
 });
 
@@ -44,6 +47,4 @@ export function spawnWave(waveNumber: number) {
       cells: newCells,
     };
   });
-
-  console.log(`Запущена волна ${waveNumber} с ${newEnemies.length} врагами`);
 }

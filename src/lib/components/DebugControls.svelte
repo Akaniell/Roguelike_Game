@@ -26,7 +26,7 @@
   function placePlayerRandomly() {
     const x = Math.floor(Math.random() * 7);
     const y = Math.floor(Math.random() * 5);
-    movePlayerToBoard(player, x, y);
+    movePlayerToBoard(x, y);
   }
 
   function onActionClick(action: string) {

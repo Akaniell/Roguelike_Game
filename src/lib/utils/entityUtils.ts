@@ -8,8 +8,8 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
   let coinsReward = 0;
   let enemyIdToRemove: string | null = null;
 
-  let currentPlayer: Player | undefined;
-  playerStore.subscribe((p) => (currentPlayer = p))();
+  // Синхронно получаем актуальные значения стора
+  let currentPlayer = get(playerStore);
   let currentEnemies = get(enemiesStore);
 
   gameBoardStore.update((board) => {
@@ -30,7 +30,9 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
             playerEntity.hp -= damage;
 
             if (currentPlayer) {
+              console.log("До обновления player:", currentPlayer.elements);
               currentPlayer = { ...currentPlayer, hp: playerEntity.hp };
+              console.log("После обновления player:", currentPlayer.elements);
               playerStore.set(currentPlayer);
             }
 

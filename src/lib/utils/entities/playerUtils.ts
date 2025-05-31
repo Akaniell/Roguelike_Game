@@ -1,7 +1,10 @@
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
+import { playerStore } from "$lib/Stores/playerStore";
 import type { Cell, GameBoard, Player } from "$lib/Stores/types";
+import { get } from "svelte/store";
 
-export function movePlayerToBoard(player: Player, x: number, y: number) {
+export function movePlayerToBoard(x: number, y: number) {
+  const player = get(playerStore);
   gameBoardStore.update((board) => {
     if (board.cells[y][x].content !== "empty") {
       throw new Error(`Клетка (${x}, ${y}) не пуста`);
@@ -29,4 +32,19 @@ export function findPlayerCell(gameBoard: GameBoard): Cell | null {
     }
   }
   return null;
+}
+
+export function refreshPlayerEntityInBoard() {
+  const player = get(playerStore);
+  gameBoardStore.update((board) => {
+    const newCells = board.cells.map((row) =>
+      row.map((cell) => {
+        if (cell.content === "player") {
+          return { ...cell, entity: player };
+        }
+        return cell;
+      })
+    );
+    return { ...board, cells: newCells };
+  });
 }

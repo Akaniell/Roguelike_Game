@@ -8,6 +8,9 @@
   import { enemiesStore } from "$lib/Stores/enemiesStore";
   import type { Cell, SpellCombination } from "$lib/Stores/types";
   import { handleCellAction, swapEntities } from "$lib/utils/board/boardUtils";
+  import { spellEffectsMap } from "$lib/utils/spells/spellUtils";
+  import { moveAllEnemies } from "$lib/utils/entities/enemyUtils";
+  import { refreshPlayerEntityInBoard } from "$lib/utils/entities/playerUtils";
 
   $: player = $playerStore;
 
@@ -35,7 +38,6 @@
       (s) => s.spellName === $selectedSpellName
     );
     if (!spell) {
-      console.warn("Заклинание не найдено:", $selectedSpellName);
       return;
     }
     applySpellOnCell(spell, cell);
@@ -46,11 +48,17 @@
     console.log(`Применяем заклинание "${spell.spellName}" на клетку`, cell);
     selectedElements.set([]);
 
-    // Здесь можно использовать реактивные переменные enemies и currentWave
     console.log("Текущий список врагов:", $enemiesStore);
     console.log("Текущая волна:", $currentWaveStore);
 
-    // TODO: Реализовать механику применения заклинания
+    const effectFunc = spellEffectsMap[spell.spellName];
+    if (effectFunc) {
+      effectFunc(cell, spell);
+    } else {
+      console.warn(`Нет обработчика для заклинания "${spell.spellName}"`);
+    }
+    moveAllEnemies();
+    refreshPlayerEntityInBoard();
   }
 
   function setActiveAction(action: string | null) {
