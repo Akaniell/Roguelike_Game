@@ -74,6 +74,7 @@ export function applyDamageToCellInBoard(
 ): { board: GameBoard; updatedPlayer?: Player; enemyIdToRemove?: string } {
   let coinsReward = 0;
   let enemyIdToRemove: string | undefined;
+  let buildingRemoved = false;
 
   const newCells = board.cells.map((row) =>
     row.map((cell) => ({
@@ -112,6 +113,18 @@ export function applyDamageToCellInBoard(
             enemyIdToRemove = enemyEntity.id;
             cell.content = "empty";
             cell.entity = undefined;
+          }
+        }
+        break;
+      case "building":
+        {
+          const buildingEntity = cell.entity as Building;
+          buildingEntity.hp -= damage;
+
+          if (buildingEntity.hp <= 0) {
+            cell.content = "empty";
+            cell.entity = undefined;
+            buildingRemoved = true;
           }
         }
         break;

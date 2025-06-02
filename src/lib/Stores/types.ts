@@ -22,7 +22,10 @@ export interface Enemy extends Entity {
   story?: string;
 }
 
-export interface Building extends Entity {}
+export interface Building extends Entity {
+  durationInWaves?: number;
+  createdWave?: number; 
+}
 
 export interface Cell {
   x: number;

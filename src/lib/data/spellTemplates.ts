@@ -7,22 +7,25 @@ export const spellCombinations: SpellCombination[] = [
     description: "Мощный шар пламени, наносит 10 урона врагам.",
     damage: 10,
     animation: {
-      type: 'fireball',
-      duration: 300
+      type: "fireball",
+      duration: 300,
     },
   },
   {
     elements: ["Вода", "Вода"],
-    spellName: "Исцеляющий поток",
+    spellName: "Исцеляющее касание",
     description: "Восстанавливает 8 здоровья выбранному существу.",
     healing: 8,
+    animation: {
+      type: "healingFlow",
+      duration: 500,
+    },
   },
   {
     elements: ["Земля", "Земля"],
-    spellName: "Каменный кулак",
-    description: "Удар кулаком из камня, наносит 7 урона и оглушает.",
-    damage: 7,
-    effect: "Оглушение",
+    spellName: "Каменная стена",
+    description: "Создает каменную стену в выбранной клетке.",
+    effect: "Возведение",
   },
   {
     elements: ["Воздух", "Воздух"],
@@ -41,7 +44,8 @@ export const spellCombinations: SpellCombination[] = [
   {
     elements: ["Огонь", "Земля"],
     spellName: "Лавовый поток",
-    description: "Обжигающий поток лавы, наносит 5 урона в зоне и создаёт лаву.",
+    description:
+      "Обжигающий поток лавы, наносит 5 урона в зоне и создаёт лаву.",
     damage: 5,
     summon: "Лава",
     duration: 7,

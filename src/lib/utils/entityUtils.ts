@@ -1,3 +1,4 @@
+import { buildingsStore } from "$lib/Stores/buildingStore";
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
 import { playerStore } from "$lib/Stores/playerStore";
@@ -10,6 +11,7 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
 
   let currentPlayer = get(playerStore);
   let currentEnemies = get(enemiesStore);
+  let currentBuildings = get(buildingsStore);
 
   gameBoardStore.update((board) => {
     const newCells = board.cells.map((row) =>
@@ -58,6 +60,21 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
           }
           break;
 
+        case "building":
+          {
+            const buildingEntity = cell.entity as Building;
+            buildingEntity.hp -= damage;
+
+            if (buildingEntity.hp <= 0) {
+              currentBuildings = currentBuildings.filter(
+                (building) => building.id !== buildingEntity.id
+              );
+              cell.content = "empty";
+              cell.entity = undefined;
+            }
+          }
+          break;
+
         default:
           console.log(`Неизвестный тип сущности (${cell.entity.type})`);
       }
@@ -84,6 +101,8 @@ export function applyDamageToCell(x: number, y: number, damage: number) {
   } else {
     enemiesStore.set(currentEnemies);
   }
+
+  buildingsStore.set(currentBuildings);
 }
 
 export function applyHealToCell(x: number, y: number, heal: number) {

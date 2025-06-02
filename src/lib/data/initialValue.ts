@@ -1,4 +1,4 @@
-import type { Player, Enemy, GameBoard, Cell } from "../Stores/types";
+import type { Player, Enemy, GameBoard, Cell, Building } from "../Stores/types";
 
 export const defaultPlayer: Player = {
   id: "1",
@@ -14,6 +14,7 @@ export const defaultPlayer: Player = {
 };
 
 export const defaultEnemies: Enemy[] = [];
+export const defaultBuildings: Building[] = [];
 
 function createDefaultGameBoard(): GameBoard {
   const width = 9;

@@ -4,7 +4,6 @@ import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { currentWaveStore, gameBoardStore } from "$lib/Stores/gameBoardStore";
 import { get } from "svelte/store";
 import { createEnemyFromTemplate } from "./entities/enemyFactory";
-import { addEnemyFromTemplate } from "./entities/enemyUtils";
 
 let isSpawning = false;
 
@@ -36,7 +35,6 @@ export function spawnWave(waveNumber: number) {
 
   enemiesStore.set(newEnemies);
 
-  // Получаем все свободные клетки в последних двух столбцах
   const lastColumns = [board.width - 2, board.width - 1];
   const availablePositions: { x: number; y: number }[] = [];
 
@@ -49,11 +47,6 @@ export function spawnWave(waveNumber: number) {
     }
   }
 
-  if (availablePositions.length < newEnemies.length) {
-    console.warn("Недостаточно свободных клеток для размещения всех врагов");
-  }
-
-  // Функция для случайного выбора уникальных позиций
   function getRandomUniquePositions(count: number, positions: { x: number; y: number }[]) {
     const shuffled = positions.slice().sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count);

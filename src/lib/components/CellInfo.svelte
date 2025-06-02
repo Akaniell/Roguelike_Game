@@ -1,5 +1,7 @@
 <script lang="ts">
   import { currentCellStore } from "$lib/Stores/currentCellStore";
+  import { currentWaveStore } from "$lib/Stores/gameBoardStore";
+  import { derived } from "svelte/store";
 </script>
 
 {#if $currentCellStore}
@@ -52,6 +54,13 @@
         <div class="stat-row">
           <span class="label">Радиус атаки:</span>
           <span>{$currentCellStore.entity.attackRange}</span>
+        </div>
+      {/if}
+
+      {#if $currentCellStore.entity?.type === "building" && "createdWave" in $currentCellStore.entity}
+        <div class="stat-row">
+          <span class="label">Волна создания:</span>
+          <span>{$currentCellStore.entity.createdWave}</span>
         </div>
       {/if}
     {:else}

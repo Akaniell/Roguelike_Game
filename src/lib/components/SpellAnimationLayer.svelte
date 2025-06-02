@@ -26,6 +26,20 @@
         on:animationend={() => handleAnimationEnd(anim.id)}
       ></div>
     {/if}
+    {#if anim.type === "healingFlow"}
+      <div
+        class="healing-flow"
+        style="
+            left: {anim.startX}px;
+            top: {anim.startY}px;
+            --start-x: {anim.startX}px;
+            --start-y: {anim.startY}px;
+            --target-x: {anim.endX}px;
+            --target-y: {anim.endY}px;
+            animation-duration: {anim.duration}ms;"
+        on:animationend={() => handleAnimationEnd(anim.id)}
+      ></div>
+    {/if}
   {/each}
 </div>
 
@@ -60,4 +74,26 @@
       );
     }
   }
+
+  .healing-flow {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: url('/img/spells/healingFlow.png') no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  animation: healingFlowMove linear forwards;
+}
+
+@keyframes healingFlowMove {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(
+      calc(var(--target-x) - var(--start-x, 0px)),
+      calc(var(--target-y) - var(--start-y, 0px))
+    );
+  }
+}
 </style>
