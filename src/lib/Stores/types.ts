@@ -4,13 +4,13 @@ export interface Entity {
   type: "player" | "enemy" | "building";
   hp: number;
   image: string;
+  maxHp: number;
 }
 
 export interface Player extends Entity {
   coins: number;
   elements: string[];
   effects?: StatusEffect[];
-  maxHp: number;
   unlockedSlotsCount: number;
 }
 

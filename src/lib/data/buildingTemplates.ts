@@ -6,6 +6,7 @@ export const buildingTemplates: Building[] = [
     name: "Каменная стена",
     type: "building",
     hp: 20,
+    maxHp: 20,
     image: "/img/buildings/stone-wall.png",
     durationInWaves: 1, 
   },

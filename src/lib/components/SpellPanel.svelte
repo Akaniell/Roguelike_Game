@@ -6,6 +6,13 @@
 
   const allElements = ["Огонь", "Вода", "Земля", "Воздух"];
 
+  const elementIcons: Record<string, string> = {
+    Земля: "/img/elements/earth.png",
+    Огонь: "/img/elements/fire.png",
+    Вода: "/img/elements/water.png",
+    Воздух: "/img/elements/air.png",
+  };
+
   $: currentChosenElements = $playerStore?.elements ?? [];
   $: unlockedSlotsCount = $playerStore?.unlockedSlotsCount ?? 2;
   $: currentTurnElements = $selectedElements;
@@ -75,7 +82,7 @@
       class="result-slot"
       on:mouseenter={() => (showTooltip = true)}
       on:mouseleave={() => (showTooltip = false)}
-      aria-label={currentSpell?.description ?? "Выберите 2 стихии"}
+      aria-label={currentSpell?.description ?? "Выберите стихии"}
       on:click={onResultClick}
       disabled={!currentSpell}
     >
@@ -100,6 +107,7 @@
         on:click={() => addElement(el)}
         title={el}
       >
+        <img src={elementIcons[el]} alt={el} class="element-icon" />
         {el}
       </button>
     {/each}
@@ -255,5 +263,13 @@
   .element-button:not(:disabled):hover {
     background-color: var(--color-button-bg-hover);
     border-color: var(--color-button-bg-hover);
+  }
+
+  .element-icon {
+    width: auto;
+    height: 24px;
+    margin-right: 6px;
+    vertical-align: middle;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.7));
   }
 </style>

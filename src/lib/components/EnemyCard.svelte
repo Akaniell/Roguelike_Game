@@ -3,7 +3,7 @@
 
   export let name: Enemy["name"];
   export let image: Enemy["image"];
-  export let hp: Enemy["hp"];
+  export let maxHp: Enemy["maxHp"];
   export let attackDamage: Enemy["attackDamage"];
   export let coinsReward: Enemy["coinsReward"];
   export let story: Enemy["story"];
@@ -14,7 +14,7 @@
   <p>{name}</p>
   <p class="story">{story}</p>
   <div class="stats">
-    <span>HP: {hp}</span>
+     <span>Здоровье: {maxHp}</span>
     <span>Атака: {attackDamage}</span>
     <div class="reward-container">
       <span>Награда: {coinsReward} </span>

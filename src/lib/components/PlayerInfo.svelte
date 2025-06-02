@@ -37,7 +37,7 @@
     </div>
     <div class="stat-row">
       <span class="stat-label">Волна:</span>
-      <span>{$currentWaveStore}</span>
+      <span class="">{$currentWaveStore}</span>
     </div>
   </div>
   <div class="player-effects">
@@ -126,6 +126,11 @@
     color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
     font-size: 0.95em;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
   .hp-bar {
     position: relative;
@@ -141,7 +146,7 @@
   .hp-fill {
     display: block;
     height: 100%;
-    background: linear-gradient(90deg, #e00, #fa0 80%);
+    background: linear-gradient(90deg, #4caf50, #81c784);
     transition: width 0.3s ease;
     border-radius: 3px 0 0 3px;
     width: 0;
@@ -160,14 +165,22 @@
     text-shadow: 0 0 3px #000;
     pointer-events: none;
     user-select: none;
-    font-weight: bold;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
   .coin-value {
     min-width: 16px;
     text-align: right;
     color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
-    font-weight: bold;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
   .coin-gif {
     width: 16px;

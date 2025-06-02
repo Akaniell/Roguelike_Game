@@ -1,9 +1,11 @@
 <script lang="ts">
   import ShopItemCard from "$lib/components/ShopItemCard.svelte";
-  import { shopStore } from "$lib/Stores/shopStore"; 
-  import { buyItem } from "$lib/utils/shopUtils"; 
+  import { shopStore } from "$lib/Stores/shopStore";
+  import { buyItem } from "$lib/utils/shopUtils";
+  import { playerStore } from "$lib/Stores/playerStore";
 
   let items = $shopStore;
+  let player = $playerStore;
 
   function handleBuy(event: CustomEvent<string>) {
     buyItem(event.detail);
@@ -11,6 +13,11 @@
 </script>
 
 <p class="page-title">Магазин</p>
+
+<div class="coins-display">
+  <span class="coins-count">{player.coins}</span>
+  <img src="/img/coin.gif" alt="Монета" class="coin-icon" />
+</div>
 
 <div class="shop-list">
   {#each items as item (item.id)}
@@ -30,6 +37,32 @@
       2px -2px 0 #000,
       -2px 2px 0 #000,
       2px 2px 0 #000;
+  }
+
+  .coins-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "Press Start 2P", cursive, monospace;
+    font-size: 1.5rem;
+    color: #ffd700; /* золотистый цвет */
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
+    margin-bottom: 1rem;
+  }
+
+  .coin-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .coins-count {
+    min-width: 40px;
+    text-align: left;
   }
 
   .shop-list {

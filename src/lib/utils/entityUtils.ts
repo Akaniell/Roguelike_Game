@@ -11,11 +11,12 @@ interface ApplyDamageResult {
   buildingRemoved?: boolean;
 }
 
-export function applyDamageToCell(
+export async function applyDamageToCell(
   x: number,
   y: number,
   damage: number
-): ApplyDamageResult {
+): Promise<ApplyDamageResult> {
+  await new Promise((resolve) => setTimeout(resolve, 300));
   let coinsReward = 0;
   let enemyIdToRemove: string | null = null;
   let buildingRemoved = false;

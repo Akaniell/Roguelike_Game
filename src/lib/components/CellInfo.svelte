@@ -24,7 +24,7 @@
     {#if $currentCellStore.entity}
       <div class="hp-row">
         <span class="label">Здоровье:</span>
-        <span class="hp-text">{$currentCellStore.entity.hp}</span>
+        <span class="hp-text">{$currentCellStore.entity.hp}/{$currentCellStore.entity.maxHp}</span>
       </div>
 
       {#if $currentCellStore.entity.type === "player" && "coins" in $currentCellStore.entity}

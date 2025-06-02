@@ -10,7 +10,7 @@
     <EnemyCard
       name={enemy.name}
       image={enemy.image}
-      hp={enemy.hp}
+      maxHp={enemy.maxHp}
       attackDamage={enemy.attackDamage}
       coinsReward={enemy.coinsReward}
       story={enemy.story ?? "История отсутствует."}

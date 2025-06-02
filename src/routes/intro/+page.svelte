@@ -6,6 +6,13 @@
 
   const elements = ["Земля", "Огонь", "Вода", "Воздух"];
 
+  const elementIcons: Record<string, string> = {
+    Земля: "/img/elements/earth.png",
+    Огонь: "/img/elements/fire.png",
+    Вода: "/img/elements/water.png",
+    Воздух: "/img/elements/air.png",
+  };
+
   const story = [
     ...lore.slice(0, 4),
     "Выбери первую стихию:",
@@ -65,7 +72,10 @@
     {:else if step === 5 || step === 9}
       <div class="elements-choice">
         {#each elements.filter((el) => !selectedElements.includes(el)) as el}
-          <button on:click={() => selectElement(el)}>{el}</button>
+          <button on:click={() => selectElement(el)}>
+            <img src={elementIcons[el]} alt={el} class="element-icon" />
+            {el}
+          </button>
         {/each}
       </div>
     {:else if step === 6 || step === 7}
@@ -128,11 +138,24 @@
     border: none;
     padding: 10px 20px;
     color: white;
-    font-weight: bold;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    margin: 2px;
+    text-shadow:
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000;
   }
   button:hover {
     background-color: rgba(255 255 255 / 0.2);
   }
+
+  .element-icon {
+  width: auto;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 1px black);
+}
 </style>
