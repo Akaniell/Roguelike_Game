@@ -37,10 +37,11 @@ export function addEnemyFromTemplate(template: Enemy, x: number, y: number) {
   });
 }
 
-export function moveAllEnemies() {
+export async function moveAllEnemies() {
   const board = get(gameBoardStore);
   let enemies = get(enemiesStore);
   let player = get(playerStore);
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   const newCells: Cell[][] = board.cells.map((row) =>
     row.map((cell) => ({

@@ -3,12 +3,36 @@
   import { gameBoardStore, currentWaveStore } from "$lib/Stores/gameBoardStore";
   import { selectedElements, selectedSpellName } from "$lib/Stores/spellStore";
   import { spellCombinations } from "$lib/data/spellTemplates";
-  import { enemiesStore } from "$lib/Stores/enemiesStore";
-  import type { Cell, SpellCombination } from "$lib/Stores/types";
+  import type {
+    Cell,
+    SpellAnimation,
+    SpellCombination,
+  } from "$lib/Stores/types";
   import { spellEffectsMap } from "$lib/utils/spells/spellUtils";
   import { moveAllEnemies } from "$lib/utils/entities/enemyUtils";
   import { refreshPlayerEntityInBoard } from "$lib/utils/entities/playerUtils";
+  import SpellAnimationLayer from "./SpellAnimationLayer.svelte";
 
+  let spellAnimations: SpellAnimation[] = [];
+
+  function launchSpellAnimation(
+    type: string,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    duration = 500
+  ) {
+    const id = crypto.randomUUID();
+    spellAnimations = [
+      ...spellAnimations,
+      { id, type, startX, startY, endX, endY, duration },
+    ];
+  }
+
+  function handleAnimationDone(id: string) {
+    spellAnimations = spellAnimations.filter((anim) => anim.id !== id);
+  }
   function handleCellClick(cell: Cell) {
     const spell = spellCombinations.find(
       (s) => s.spellName === $selectedSpellName
@@ -21,15 +45,12 @@
   }
 
   function applySpellOnCell(spell: SpellCombination, cell: Cell) {
-    console.log(`Применяем заклинание "${spell.spellName}" на клетку`, cell);
     selectedElements.set([]);
-
-    console.log("Текущий список врагов:", $enemiesStore);
-    console.log("Текущая волна:", $currentWaveStore);
 
     const effectFunc = spellEffectsMap[spell.spellName];
     if (effectFunc) {
-      effectFunc(cell, spell);
+      let cellSize = 80;
+      effectFunc(cell, spell, $gameBoardStore, cellSize, launchSpellAnimation);
     } else {
       console.warn(`Нет обработчика для заклинания "${spell.spellName}"`);
     }
@@ -38,14 +59,22 @@
   }
 </script>
 
-<div class="gameboard">
-  {#each $gameBoardStore.cells as row (row[0].y)}
-    <div class="row">
-      {#each row as cell (cell.x)}
-        <BoardCell {cell} onClick={handleCellClick}/>
-      {/each}
-    </div>
-  {/each}
+<div class="gameboard-wrapper" style="position: relative;">
+  <div class="gameboard">
+    {#each $gameBoardStore.cells as row (row[0].y)}
+      <div class="row">
+        {#each row as cell (cell.x)}
+          <BoardCell {cell} onClick={handleCellClick} />
+        {/each}
+      </div>
+    {/each}
+  </div>
+
+  <!-- Слой анимаций поверх игрового поля -->
+  <SpellAnimationLayer
+    animations={spellAnimations}
+    onDone={handleAnimationDone}
+  />
 </div>
 
 <style>

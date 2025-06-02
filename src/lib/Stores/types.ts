@@ -8,7 +8,7 @@ export interface Entity {
 
 export interface Player extends Entity {
   coins: number;
-  elements: string[],
+  elements: string[];
   effects?: StatusEffect[];
   maxHp: number;
   unlockedSlotsCount: number;
@@ -16,9 +16,9 @@ export interface Player extends Entity {
 
 export interface Enemy extends Entity {
   coinsReward: number;
-  moveStrategy? : "straight" | "diagonal" | "zigzag";  
-  attackRange: number,
-  attackDamage: number,
+  moveStrategy?: "straight" | "diagonal" | "zigzag";
+  attackRange: number;
+  attackDamage: number;
   story?: string;
 }
 
@@ -40,19 +40,48 @@ export interface GameBoard {
 export interface StatusEffect {
   id: string;
   name: string;
-  icon?: string; 
+  icon?: string;
   description?: string;
-  duration?: number; 
+  duration?: number;
 }
 
 export interface SpellCombination {
-  elements: [string, string]; 
+  elements: [string, string];
   spellName: string;
   description: string;
   damage?: number;
-  effect?: string; 
+  effect?: string;
   healing?: number;
   summon?: string;
   knockback?: number;
   duration?: number;
+  animation?: {
+    type: string;
+    duration?: number;
+  };
 }
+
+export interface SpellAnimation {
+  id: string;
+  type: string;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  duration: number;
+}
+
+export type SpellEffectFunc = (
+  cell: Cell,
+  spell: SpellCombination,
+  gameBoard: GameBoard,
+  cellSize: number,
+  launchSpellAnimation: (
+    type: string,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    duration?: number
+  ) => void
+) => void;
