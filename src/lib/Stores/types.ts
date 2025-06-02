@@ -88,3 +88,30 @@ export type SpellEffectFunc = (
     duration?: number
   ) => void
 ) => void;
+
+export type ShopItemType = "upgrade" | "oneTime";
+
+export interface ShopItemBase {
+  id: string;             
+  name: string;            
+  description: string;   
+  price: number;         
+  type: ShopItemType;     
+  icon?: string;        
+}
+
+export interface UpgradeItem extends ShopItemBase {
+  type: "upgrade";
+  currentLevel: number;  
+  maxLevel?: number;   
+  effect: (player: Player) => Player; 
+}
+
+// Интерфейс одноразового предмета
+export interface OneTimeItem extends ShopItemBase {
+  type: "oneTime";
+  purchased: boolean; 
+  effect: (player: Player) => Player; 
+}
+
+export type ShopItem = UpgradeItem | OneTimeItem;

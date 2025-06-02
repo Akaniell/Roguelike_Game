@@ -3,7 +3,7 @@
   import { enemyTemplates } from "$lib/data/enemyTemplates";
 </script>
 
-<h1 class="page-title">Кодекс врагов</h1>
+<p class="page-title">Кодекс врагов</p>
 
 <div class="enemies-list">
   {#each enemyTemplates as enemy}
@@ -20,10 +20,16 @@
 
 <style>
   .page-title {
+    font-size: 48px;
     color: #eee;
     text-align: center;
     margin: 1rem 0;
     font-family: "Press Start 2P", cursive, monospace;
+    text-shadow:
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000;
   }
 
   .enemies-list {

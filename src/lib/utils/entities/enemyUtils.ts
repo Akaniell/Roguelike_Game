@@ -1,12 +1,12 @@
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { gameBoardStore } from "$lib/Stores/gameBoardStore";
-import type { Cell, Enemy, GameBoard } from "$lib/Stores/types";
+import type { Cell, Enemy} from "$lib/Stores/types";
 import { get } from "svelte/store";
 import {
   findCellByEntityId,
   swapEntitiesInBoard,
 } from "../board/boardUtils";
-import { createEnemyFromTemplate, createRandomEnemy } from "./enemyFactory";
+import { createEnemyFromTemplate} from "./enemyFactory";
 import * as moveStrategies from "./moveStrategies";
 import { playerStore } from "$lib/Stores/playerStore";
 import { applyDamageToCell } from "../entityUtils";

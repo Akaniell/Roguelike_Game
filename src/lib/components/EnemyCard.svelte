@@ -11,7 +11,7 @@
 
 <div class="enemy-card">
   <img class="portrain-gif" src={image} alt={`Изображение ${name}`} />
-  <h3>{name}</h3>
+  <p>{name}</p>
   <p class="story">{story}</p>
   <div class="stats">
     <span>HP: {hp}</span>
@@ -43,8 +43,14 @@
     border-radius: 6px;
     margin-bottom: 0.5rem;
   }
-  .enemy-card h3 {
+  .enemy-card p {
+    font-size: 1.3rem;
     margin: 0 0 0.5rem 0;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
   .enemy-card .story {
     font-size: 0.9rem;
@@ -54,7 +60,6 @@
   .enemy-card .stats {
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
     font-size: small;
     flex-direction: column;
     gap: 10px;

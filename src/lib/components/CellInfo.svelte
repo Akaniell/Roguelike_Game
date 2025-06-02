@@ -80,6 +80,11 @@
     border-radius: 10px;
     font-size: 0.9rem;
     min-width: 270px;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
   .header {
     display: flex;
@@ -100,7 +105,6 @@
     flex-direction: column;
   }
   .name {
-    font-weight: bold;
     font-size: 1.1rem;
     color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
@@ -114,7 +118,6 @@
   }
   .label {
     min-width: 85px;
-    font-weight: bold;
     color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
   }
@@ -127,7 +130,6 @@
     text-shadow: 0 0 3px #000;
     pointer-events: none;
     user-select: none;
-    font-weight: bold;
   }
   .coin-gif {
     width: 16px;

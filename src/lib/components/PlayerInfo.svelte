@@ -85,13 +85,14 @@
   }
   .player-name {
     font-size: 1.1rem;
-    font-weight: bold;
     margin-bottom: 0.2rem;
     letter-spacing: 1px;
     color: var(--color-button-text);
     text-shadow:
-      1px 1px 0 #000,
-      0 0 2px #000;
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
   .player-elements {
     display: flex;
@@ -122,7 +123,6 @@
   }
   .stat-label {
     min-width: 85px;
-    font-weight: bold;
     color: var(--color-button-text);
     text-shadow: 1px 1px 0 #000;
     font-size: 0.95em;

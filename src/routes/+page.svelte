@@ -12,6 +12,8 @@
     defaultPlayer,
   } from "$lib/data/initialValue";
   import { spawnWave } from "$lib/utils/gameController";
+  import { shopStore } from "$lib/Stores/shopStore";
+  import { shopTemplates } from "$lib/data/shopTemplates";
 
   let canContinue = false;
 
@@ -27,6 +29,7 @@
       playerStore.set(defaultPlayer);
       enemiesStore.set(defaultEnemies);
       gameBoardStore.set(defaultGameBoard);
+      shopStore.set(shopTemplates);
       currentWaveStore.set(1);
       spawnWave(1);
       goto("/intro");
