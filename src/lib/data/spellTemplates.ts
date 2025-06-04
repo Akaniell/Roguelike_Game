@@ -46,8 +46,8 @@ export const spellCombinations: SpellCombination[] = [
     elements: ["Огонь", "Земля"],
     spellName: "Лавовый поток",
     description:
-      "Обжигающий поток лавы, наносит 5 урона в зоне и создаёт лаву.",
-    damage: 5,
+      "Обжигающий поток лавы, наносит 7 урона в зоне и создаёт лаву.",
+    damage: 7,
     summon: "Лава",
     duration: 7,
   },

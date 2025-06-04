@@ -14,6 +14,10 @@ export const swampEffect: SpellEffectFunc = (
       const x = centerCell.x + dx;
       const y = centerCell.y + dy;
 
+      if (x < 0 || y < 0 || x >= gameBoard.width || y >= gameBoard.height) {
+      continue;
+    }
+
       const cellCenterX = x * cellSize + cellSize / 2;
       const cellCenterY = y * cellSize + cellSize / 2;
 

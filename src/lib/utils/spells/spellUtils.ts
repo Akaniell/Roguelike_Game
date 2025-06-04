@@ -11,6 +11,7 @@ import { currentWaveStore } from "$lib/Stores/gameBoardStore";
 import { placeBuildingOnField } from "../entities/buildingUtils";
 import { hurricaneEffect } from "./hyrricaneEffect";
 import { swampEffect } from "./swampEffect";
+import { lavaEffect } from "./lavaEffect";
 
 type EffectAction = (x: number, y: number, amount: number) => void;
 
@@ -93,4 +94,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Каменная стена": stoneWall,
   "Ураган": hurricaneEffect,
   "Болото": swampEffect,
+  "Лавовый поток": lavaEffect,
 };
