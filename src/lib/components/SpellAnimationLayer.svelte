@@ -116,6 +116,20 @@
         on:animationend={() => handleAnimationEnd(anim.id)}
       ></div>
     {/if}
+    {#if anim.type === "rock"}
+      <div
+        class="rock"
+        style="
+            left: {anim.startX}px;
+            top: {anim.startY}px;
+            --start-x: {anim.startX}px;
+            --start-y: {anim.startY}px;
+            --target-x: {anim.endX}px;
+            --target-y: {anim.endY}px;
+            animation-duration: {anim.duration}ms;"
+        on:animationend={() => handleAnimationEnd(anim.id)}
+      ></div>
+    {/if}
   {/each}
 </div>
 
@@ -322,6 +336,28 @@
         calc(var(--target-y) - var(--start-y))
       );
       opacity: 0.8;
+    }
+  }
+
+    .rock {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url("/img/spells/rock.png") no-repeat;
+    background-size: contain;
+    pointer-events: none;
+    animation: rockMove linear forwards;
+  }
+
+  @keyframes rockMove {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(
+        calc(var(--target-x) - var(--start-x, 0px)),
+        calc(var(--target-y) - var(--start-y, 0px))
+      );
     }
   }
 </style>

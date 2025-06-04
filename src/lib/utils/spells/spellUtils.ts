@@ -90,6 +90,12 @@ export const healingFlow = createSpellEffect({
   defaultAmount: 15,
 });
 
+export const rock = createSpellEffect({
+  amountKey: "damage",
+  action: applyDamageToCell,
+  defaultAmount: 8,
+});
+
 
 export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Огненный шар": fireball,
@@ -101,4 +107,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Паровой взрыв": steamExplosionEffect,
   "Пламенный вихрь": flameVortexEffect,
   "Эфирный поток": etherFlowEffect,
+  "Глыба судьбы": rock,
 };

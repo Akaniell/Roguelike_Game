@@ -73,9 +73,13 @@ export const spellCombinations: SpellCombination[] = [
   },
   {
     elements: ["Земля", "Воздух"],
-    spellName: "Песчаная буря",
-    description: "Буря из песка, наносит 7 урона и снижает точность врагов.",
-    damage: 7,
+    spellName: "Глыба судьбы",
+    description: "Призывает массивный валун, который наносит 8 урона и снижает точность.",
+    damage: 8,
     effect: "Снижение точности",
+    animation: {
+      type: "rock",
+      duration: 300,
+    },
   },
 ];
