@@ -22,13 +22,10 @@ export function buyItem(itemId: string): boolean {
     return false;
   }
 
-  // Списываем монеты
   playerStore.update((p) => ({ ...p, coins: p.coins - item.price }));
 
-  // Применяем эффект
   playerStore.update((p: Player) => item.effect(p));
 
-  // Обновляем магазин
   if (item.type === "oneTime") {
     shopStore.update((items) => {
       const newItems = [...items];

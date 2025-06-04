@@ -21,8 +21,6 @@ export const wavesTemplates: Enemy[][] = [
     { ...enemyTemplates[3], id: "wave3_skeleton1" },
     { ...enemyTemplates[3], id: "wave3_skeleton2" },
     { ...enemyTemplates[3], id: "wave3_skeleton3" },
-    { ...enemyTemplates[3], id: "wave3_skeleton4" },
-    { ...enemyTemplates[3], id: "wave3_skeleton5" },
   ],
 
   // Волна 4 — 1 королевский слайм и 2 слайма

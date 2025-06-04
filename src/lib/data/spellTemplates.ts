@@ -5,7 +5,7 @@ export const spellCombinations: SpellCombination[] = [
     elements: ["Огонь", "Огонь"],
     spellName: "Огненный шар",
     description: "Мощный шар пламени, наносит 10 урона врагам.",
-    damage: 10,
+    damage: 100,
     animation: {
       type: "fireball",
       duration: 300,
