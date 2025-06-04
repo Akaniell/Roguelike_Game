@@ -67,10 +67,9 @@ export const spellCombinations: SpellCombination[] = [
   },
   {
     elements: ["Вода", "Воздух"],
-    spellName: "Ледяной дождь",
-    description: "Дождь из ледяных игл, наносит 9 урона и замораживает.",
-    damage: 9,
-    effect: "Заморозка",
+    spellName: "Эфирный поток",
+    description: "Мгновенно переносит заклинателя на выбранную клетку.",
+    effect: "Телепортация",
   },
   {
     elements: ["Земля", "Воздух"],

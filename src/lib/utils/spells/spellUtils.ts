@@ -14,6 +14,7 @@ import { swampEffect } from "./swampEffect";
 import { lavaEffect } from "./lavaEffect";
 import { steamExplosionEffect } from "./steamExplosion";
 import { flameVortexEffect } from "./flameVortexEffect";
+import { etherFlowEffect } from "./etherFlow";
 
 type EffectAction = (x: number, y: number, amount: number) => void;
 
@@ -99,4 +100,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Лавовый поток": lavaEffect,
   "Паровой взрыв": steamExplosionEffect,
   "Пламенный вихрь": flameVortexEffect,
+  "Эфирный поток": etherFlowEffect,
 };

@@ -102,6 +102,20 @@
         on:animationend={() => handleAnimationEnd(anim.id)}
       ></div>
     {/if}
+    {#if anim.type === "etherFlow"}
+      <div
+        class="etherFlow"
+        style="
+      left: {anim.startX}px;
+      top: {anim.startY}px;
+      --start-x: {anim.startX}px;
+      --start-y: {anim.startY}px;
+      --target-x: {anim.endX}px;
+      --target-y: {anim.endY}px;
+      animation-duration: {anim.duration}ms;"
+        on:animationend={() => handleAnimationEnd(anim.id)}
+      ></div>
+    {/if}
   {/each}
 </div>
 
@@ -274,6 +288,30 @@
   }
 
   @keyframes flameVortexMove {
+    from {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+    to {
+      transform: translate(
+        calc(var(--target-x) - var(--start-x)),
+        calc(var(--target-y) - var(--start-y))
+      );
+      opacity: 0.8;
+    }
+  }
+
+  .etherFlow {
+    position: absolute;
+    width: 40px;
+    height: 60px;
+    background: url("/img/spells/etherFlow.png") no-repeat;
+    background-size: contain;
+    pointer-events: none;
+    animation: etherFlowMove linear forwards;
+  }
+
+  @keyframes etherFlowMove {
     from {
       transform: translate(0, 0);
       opacity: 1;
