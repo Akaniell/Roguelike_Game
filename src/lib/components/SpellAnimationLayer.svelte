@@ -88,6 +88,20 @@
         on:animationend={() => handleAnimationEnd(anim.id)}
       ></div>
     {/if}
+    {#if anim.type === "flameVortex"}
+      <div
+        class="flameVortex"
+        style="
+      left: {anim.startX}px;
+      top: {anim.startY}px;
+      --start-x: {anim.startX}px;
+      --start-y: {anim.startY}px;
+      --target-x: {anim.endX}px;
+      --target-y: {anim.endY}px;
+      animation-duration: {anim.duration}ms;"
+        on:animationend={() => handleAnimationEnd(anim.id)}
+      ></div>
+    {/if}
   {/each}
 </div>
 
@@ -246,6 +260,30 @@
     100% {
       opacity: 0;
       transform: scale(0.8);
+    }
+  }
+
+  .flameVortex {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background: url("/img/spells/flameVortex.png") no-repeat;
+    background-size: contain;
+    pointer-events: none;
+    animation: flameVortexMove linear forwards;
+  }
+
+  @keyframes flameVortexMove {
+    from {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+    to {
+      transform: translate(
+        calc(var(--target-x) - var(--start-x)),
+        calc(var(--target-y) - var(--start-y))
+      );
+      opacity: 0.8;
     }
   }
 </style>

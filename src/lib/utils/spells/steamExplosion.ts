@@ -1,5 +1,4 @@
 import type { Cell, GameBoard, SpellEffectFunc } from "$lib/Stores/types";
-import { findPlayerCell } from "../entities/playerUtils";
 import { applyDamageToCell } from "../entityUtils";
 
 export const steamExplosionEffect: SpellEffectFunc = (

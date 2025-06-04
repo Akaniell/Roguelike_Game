@@ -54,9 +54,8 @@ export const spellCombinations: SpellCombination[] = [
   {
     elements: ["Огонь", "Воздух"],
     spellName: "Пламенный вихрь",
-    description: "Вихрь огня, наносит 5 урона и поджигает врагов.",
-    damage: 5,
-    effect: "Поджог",
+    description: "Отталкивает врага, а так же цели над и под ней.",
+    effect: "Отталкивание",
   },
   {
     elements: ["Вода", "Земля"],

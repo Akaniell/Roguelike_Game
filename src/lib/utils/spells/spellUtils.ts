@@ -9,10 +9,11 @@ import { findPlayerCell } from "../entities/playerUtils";
 import { applyDamageToCell, applyHealToCell } from "../entityUtils";
 import { currentWaveStore } from "$lib/Stores/gameBoardStore";
 import { placeBuildingOnField } from "../entities/buildingUtils";
-import { hurricaneEffect } from "./hyrricaneEffect";
+import { hurricaneEffect } from "./hurricaneEffect";
 import { swampEffect } from "./swampEffect";
 import { lavaEffect } from "./lavaEffect";
 import { steamExplosionEffect } from "./steamExplosion";
+import { flameVortexEffect } from "./flameVortexEffect";
 
 type EffectAction = (x: number, y: number, amount: number) => void;
 
@@ -97,4 +98,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Болото": swampEffect,
   "Лавовый поток": lavaEffect,
   "Паровой взрыв": steamExplosionEffect,
+  "Пламенный вихрь": flameVortexEffect,
 };
