@@ -70,7 +70,6 @@
     {/each}
   </div>
 
-  <!-- Слой анимаций поверх игрового поля -->
   <SpellAnimationLayer
     animations={spellAnimations}
     onDone={handleAnimationDone}

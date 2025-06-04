@@ -1,7 +1,5 @@
 <script lang="ts">
   import { currentCellStore } from "$lib/Stores/currentCellStore";
-  import { currentWaveStore } from "$lib/Stores/gameBoardStore";
-  import { derived } from "svelte/store";
 </script>
 
 {#if $currentCellStore}
@@ -69,7 +67,7 @@
   </div>
 {:else}
   <div class="cell-info empty">
-    Наведи курсор на клетку, чтобы увидеть информацию
+    Наведите курсор на клетку, чтобы увидеть информацию
   </div>
 {/if}
 

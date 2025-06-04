@@ -107,7 +107,6 @@ export interface UpgradeItem extends ShopItemBase {
   effect: (player: Player) => Player; 
 }
 
-// Интерфейс одноразового предмета
 export interface OneTimeItem extends ShopItemBase {
   type: "oneTime";
   purchased: boolean; 

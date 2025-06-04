@@ -69,10 +69,8 @@ export const stoneWall: SpellEffectFunc = (
   cellSize: number,
   launchSpellAnimation
 ) => {
-  // Просто вызываем функцию установки постройки на поле
   placeBuildingOnField("stone-wall", cell.x, cell.y);
 
-  // Анимации нет, поэтому ничего не вызываем
 };
 
 export const fireball = createSpellEffect({

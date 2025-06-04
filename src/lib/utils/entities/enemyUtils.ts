@@ -43,11 +43,6 @@ export async function moveAllEnemies() {
   let player = get(playerStore);
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  // Копируем клетки для локальной работы с board (если нужно)
-  // Можно убрать, если не используешь локальную копию
-  // let newCells: Cell[][] = board.cells.map(...);
-  // let newBoard: GameBoard = { ...board, cells: newCells };
-
   for (const enemy of enemies) {
     const enemyCell = findCellByEntityId(board, enemy.id);
     if (!enemyCell) continue;
