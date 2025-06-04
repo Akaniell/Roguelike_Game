@@ -33,12 +33,13 @@ export function buyItem(itemId: string): boolean {
       return newItems;
     });
   } else if (item.type === "upgrade") {
+    if(item.maxLevel && item.currentLevel <= item.maxLevel){
     shopStore.update((items) => {
       const newItems = [...items];
       const currentLevel = (item.currentLevel ?? 0) + 1;
       newItems[itemIndex] = { ...item, currentLevel };
       return newItems;
-    });
+    });}
   }
 
   return true;

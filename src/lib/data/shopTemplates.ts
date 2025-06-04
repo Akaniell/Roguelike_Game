@@ -14,7 +14,7 @@ export const shopTemplates: ShopItem[] = [
     maxLevel: 10,
     effect: (player: Player) => ({
       ...player,
-      maxHp: player.maxHp + 10,
+      maxHp: Math.min(player.maxHp + 1, 200),
       hp: player.hp + 10,
     }),
   },
@@ -49,6 +49,24 @@ export const shopTemplates: ShopItem[] = [
     },
   },
   {
+    id: "newElement",
+    name: "Открытие новой стихии",
+    description: "Разблокирует случайную новую стихию.",
+    price: 1,
+    type: "oneTime",
+    purchased: false,
+    effect: (player: Player) => {
+      const available = elements.filter((el) => !player.elements.includes(el));
+      if (available.length === 0) return player;
+      const randomElement =
+        available[Math.floor(Math.random() * available.length)];
+      return {
+        ...player,
+        elements: [...player.elements, randomElement],
+      };
+    },
+  },
+  {
     id: "extraSlot",
     name: "Дополнительная ячейка",
     description:
@@ -59,7 +77,7 @@ export const shopTemplates: ShopItem[] = [
     maxLevel: 4,
     effect: (player: Player) => ({
       ...player,
-      unlockedSlotsCount: player.unlockedSlotsCount + 1,
+      unlockedSlotsCount: Math.min(player.unlockedSlotsCount + 1, 4),
     }),
   },
 ];
