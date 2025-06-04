@@ -12,6 +12,7 @@ import { placeBuildingOnField } from "../entities/buildingUtils";
 import { hurricaneEffect } from "./hyrricaneEffect";
 import { swampEffect } from "./swampEffect";
 import { lavaEffect } from "./lavaEffect";
+import { steamExplosionEffect } from "./steamExplosion";
 
 type EffectAction = (x: number, y: number, amount: number) => void;
 
@@ -95,4 +96,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Ураган": hurricaneEffect,
   "Болото": swampEffect,
   "Лавовый поток": lavaEffect,
+  "Паровой взрыв": steamExplosionEffect,
 };

@@ -78,6 +78,16 @@
         on:animationend={() => handleAnimationEnd(anim.id)}
       ></div>
     {/if}
+    {#if anim.type === "steamExplosion"}
+      <div
+        class="steamExplosion"
+        style="
+      left: {anim.endX}px;
+      top: {anim.endY}px;
+      animation-duration: {anim.duration}ms;"
+        on:animationend={() => handleAnimationEnd(anim.id)}
+      ></div>
+    {/if}
   {/each}
 </div>
 
@@ -210,6 +220,32 @@
         calc(var(--target-y) - var(--start-y))
       );
       opacity: 0.8;
+    }
+  }
+
+  .steamExplosion {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    background: url("/img/spells/steamExplosion.png") no-repeat;
+    background-size: contain;
+    pointer-events: none;
+    animation: steamExplosionPulse 800ms ease-in-out forwards;
+    transform: translate(-50%, -50%);
+  }
+
+  @keyframes steamExplosionPulse {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.8);
     }
   }
 </style>

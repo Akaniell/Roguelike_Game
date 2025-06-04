@@ -8,7 +8,7 @@ export const shopTemplates: ShopItem[] = [
     id: "maxHp",
     name: "Увеличение максимального здоровья",
     description: "Увеличивает максимальное здоровье игрока на 10 единиц.",
-    price: 1,
+    price: 20,
     type: "upgrade",
     currentLevel: 0,
     maxLevel: 10,
@@ -22,7 +22,7 @@ export const shopTemplates: ShopItem[] = [
     id: "heal",
     name: "Лечение",
     description: "Восстанавливает 20 единиц здоровья.",
-    price: 1,
+    price: 5,
     type: "consumable",
     effect: (player: Player) => ({
       ...player,
@@ -33,7 +33,7 @@ export const shopTemplates: ShopItem[] = [
     id: "newElement_1",
     name: "Открытие новой стихии",
     description: "Разблокирует случайную новую стихию.",
-    price: 1,
+    price: 50,
     type: "oneTime",
     purchased: false,
     effect: (player: Player) => {
@@ -51,7 +51,7 @@ export const shopTemplates: ShopItem[] = [
     id: "newElement_2",
     name: "Открытие новой стихии",
     description: "Разблокирует случайную новую стихию.",
-    price: 1,
+    price: 100,
     type: "oneTime",
     purchased: false,
     effect: (player: Player) => {
@@ -70,7 +70,7 @@ export const shopTemplates: ShopItem[] = [
     name: "Дополнительная ячейка",
     description:
       "Увеличивает количество разблокированных ячеек для заклинаний.",
-    price: 1,
+    price: 200,
     type: "upgrade",
     currentLevel: 2,
     maxLevel: 4,
