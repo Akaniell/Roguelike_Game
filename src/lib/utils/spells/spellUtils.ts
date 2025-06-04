@@ -70,7 +70,6 @@ export const stoneWall: SpellEffectFunc = (
   launchSpellAnimation
 ) => {
   placeBuildingOnField("stone-wall", cell.x, cell.y);
-
 };
 
 export const fireball = createSpellEffect({

@@ -5,6 +5,7 @@ export function createEnemyFromTemplate(template: Enemy): Enemy {
   return {
     ...template,
     id: crypto.randomUUID(),
+    hp: template.maxHp,
   };
 }
 

@@ -16,7 +16,7 @@ export async function applyDamageToCell(
   y: number,
   damage: number
 ): Promise<ApplyDamageResult> {
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  //await new Promise((resolve) => setTimeout(resolve, 300));
   let coinsReward = 0;
   let enemyIdToRemove: string | null = null;
   let buildingRemoved = false;
@@ -38,7 +38,7 @@ export async function applyDamageToCell(
     if (cell.entity && cell.entity.hp > 0) {
       switch (cell.entity.type) {
         case "player": {
-          const playerEntity = cell.entity as Player;
+          const playerEntity = { ...cell.entity } as Player;
           playerEntity.hp -= damage;
 
           if (currentPlayer) {
@@ -49,12 +49,14 @@ export async function applyDamageToCell(
           if (playerEntity.hp <= 0) {
             cell.content = "empty";
             cell.entity = undefined;
+          } else {
+            cell.entity = playerEntity;
           }
           break;
         }
 
         case "enemy": {
-          const enemyEntity = cell.entity as Enemy;
+          const enemyEntity = { ...cell.entity } as Enemy;
           enemyEntity.hp -= damage;
 
           if (enemyEntity.hp <= 0) {
@@ -63,15 +65,16 @@ export async function applyDamageToCell(
             cell.content = "empty";
             cell.entity = undefined;
           } else {
+            cell.entity = enemyEntity;
             currentEnemies = currentEnemies.map((enemy) =>
-              enemy.id === enemyEntity.id ? { ...enemyEntity } : enemy
+              enemy.id === enemyEntity.id ? enemyEntity : enemy
             );
           }
           break;
         }
 
         case "building": {
-          const buildingEntity = cell.entity as Building;
+          const buildingEntity = { ...cell.entity } as Building;
           buildingEntity.hp -= damage;
 
           if (buildingEntity.hp <= 0) {
@@ -81,6 +84,8 @@ export async function applyDamageToCell(
             );
             cell.content = "empty";
             cell.entity = undefined;
+          } else {
+            cell.entity = buildingEntity;
           }
           break;
         }
@@ -95,6 +100,7 @@ export async function applyDamageToCell(
     return { ...board, cells: newCells };
   });
 
+  // Обновляем сторы после изменения
   if (enemyIdToRemove !== null) {
     currentEnemies = currentEnemies.filter(
       (enemy) => enemy.id !== enemyIdToRemove
@@ -151,7 +157,7 @@ export function applyHealToCell(x: number, y: number, heal: number) {
       }
       case "enemy": {
         const enemyEntity = cell.entity as Enemy;
-        enemyEntity.hp = Math.min(enemyEntity.hp + heal, enemyEntity.hp + heal);
+        enemyEntity.hp = Math.min(enemyEntity.hp + heal, enemyEntity.maxHp);
 
         currentEnemies = currentEnemies.map((enemy) =>
           enemy.id === enemyEntity.id ? { ...enemyEntity } : enemy

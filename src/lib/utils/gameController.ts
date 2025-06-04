@@ -4,6 +4,8 @@ import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { currentWaveStore, gameBoardStore } from "$lib/Stores/gameBoardStore";
 import { get } from "svelte/store";
 import { createEnemyFromTemplate } from "./entities/enemyFactory";
+import { placeRandomStoneWalls, removeAllBuildings } from "./entities/buildingUtils";
+import { buildingsStore } from "$lib/Stores/buildingStore";
 
 let isSpawning = false;
 
@@ -14,6 +16,8 @@ enemiesStore.subscribe((enemies) => {
       currentWaveStore.update((n) => {
         const newWave = n + 1;
         spawnWave(newWave);
+        removeAllBuildings();
+        placeRandomStoneWalls();
         return newWave;
       });
       setTimeout(() => {
@@ -34,7 +38,6 @@ export function spawnWave(waveNumber: number) {
   });
 
   enemiesStore.set(newEnemies);
-
   const lastColumns = [board.width - 2, board.width - 1];
   const availablePositions: { x: number; y: number }[] = [];
 

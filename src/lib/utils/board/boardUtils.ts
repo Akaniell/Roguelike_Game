@@ -44,7 +44,7 @@ export function swapEntitiesInBoard(
   const newCells = board.cells.map((row) =>
     row.map((cell) => ({
       ...cell,
-      entity: cell.entity ? { ...cell.entity } : undefined,
+      entity: cell.entity,
     }))
   );
 

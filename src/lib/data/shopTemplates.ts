@@ -21,7 +21,7 @@ export const shopTemplates: ShopItem[] = [
   {
     id: "heal",
     name: "Лечение",
-    description: "Восстанавливает 20 единиц здоровья.",
+    description: "Восстанавливает 20 единиц здоровья на следующем ходу.",
     price: 10,
     type: "oneTime",
     purchased: false,
