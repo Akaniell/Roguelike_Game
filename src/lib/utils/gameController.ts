@@ -2,12 +2,19 @@ import { browser } from "$app/environment";
 import { wavesTemplates } from "$lib/data/wavesTemplates";
 import { enemiesStore } from "$lib/Stores/enemiesStore";
 import { currentWaveStore, gameBoardStore } from "$lib/Stores/gameBoardStore";
-import { get } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { createEnemyFromTemplate } from "./entities/enemyFactory";
 import { placeRandomStoneWalls, removeAllBuildings } from "./entities/buildingUtils";
-import { buildingsStore } from "$lib/Stores/buildingStore";
+import { playerStore } from "$lib/Stores/playerStore";
 
 let isSpawning = false;
+export const isPlayerDead = writable(false);
+
+playerStore.subscribe((player) => {
+  if (player.hp <= 0) {
+    isPlayerDead.set(true);
+  }
+});
 
 enemiesStore.subscribe((enemies) => {
   if (browser) {

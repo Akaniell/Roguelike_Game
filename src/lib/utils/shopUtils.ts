@@ -42,12 +42,17 @@ export function buyItem(itemId: string): boolean {
       } else if (item.type === "upgrade") {
         const currentLevel = (item.currentLevel ?? 0) + 1;
         return { ...item, currentLevel };
-      } 
+      }
       return item;
     });
   });
 
   if (!canBuy) return false;
+
+  playerStore.update((p) => ({
+    ...p,
+    coins: p.coins - get(shopStore).find((i) => i.id === itemId)!.price,
+  }));
 
   const updatedItem = get(shopStore).find((item) => item.id === itemId);
   if (!updatedItem) return false;

@@ -20,6 +20,8 @@
   onMount(() => {
     if (browser) {
       canContinue = localStorage.getItem("currentWave") !== '0';
+      if(localStorage.getItem("player"))
+        canContinue = JSON.parse(localStorage.getItem("player") as string).hp > '0';
     }
   });
 

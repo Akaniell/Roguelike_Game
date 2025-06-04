@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import PlayerDeadModal from "$lib/components/PlayerDeadModal.svelte";
   import Sidebar from "$lib/components/Sidebar.svelte";
 
   const noSidebarPaths = ["/", "/intro"];
@@ -8,6 +9,7 @@
 </script>
 
 <div class="container">
+  <PlayerDeadModal></PlayerDeadModal>
   {#if showSidebar}
     <div class="sidebar-container">
       <Sidebar />
