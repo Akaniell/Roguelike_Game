@@ -22,8 +22,8 @@ enemiesStore.subscribe((enemies) => {
       isSpawning = true;
       currentWaveStore.update((n) => {
         const newWave = n + 1;
-        spawnWave(newWave);
         removeAllBuildings();
+        spawnWave(newWave);
         placeRandomStoneWalls();
         return newWave;
       });

@@ -30,9 +30,10 @@ export const spellCombinations: SpellCombination[] = [
   {
     elements: ["Воздух", "Воздух"],
     spellName: "Ураган",
-    description: "Сильный ветер, сбивающий врагов с ног и отталкивающий их.",
-    effect: "Сбивание с ног",
+    description: "Сильный ветер, отталкивающий врагов и наносящий 3 урона.",
+    effect: "Отталкивание",
     knockback: 2,
+    damage: 3,
   },
   {
     elements: ["Огонь", "Вода"],

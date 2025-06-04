@@ -37,7 +37,7 @@
     </div>
     <div class="stat-row">
       <span class="stat-label">Волна:</span>
-      <span class="">{$currentWaveStore}</span>
+      <span class="coin-value">{$currentWaveStore}</span>
     </div>
   </div>
   <div class="player-effects">

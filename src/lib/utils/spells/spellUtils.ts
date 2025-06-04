@@ -9,6 +9,7 @@ import { findPlayerCell } from "../entities/playerUtils";
 import { applyDamageToCell, applyHealToCell } from "../entityUtils";
 import { currentWaveStore } from "$lib/Stores/gameBoardStore";
 import { placeBuildingOnField } from "../entities/buildingUtils";
+import { hurricaneEffect } from "./hyrricaneEffect";
 
 type EffectAction = (x: number, y: number, amount: number) => void;
 
@@ -89,4 +90,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Огненный шар": fireball,
   "Исцеляющее касание": healingFlow,
   "Каменная стена": stoneWall,
+  "Ураган": hurricaneEffect,
 };

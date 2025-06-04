@@ -9,8 +9,8 @@
 </script>
 
 <div class="container">
-  <PlayerDeadModal></PlayerDeadModal>
   {#if showSidebar}
+    <PlayerDeadModal></PlayerDeadModal>
     <div class="sidebar-container">
       <Sidebar />
     </div>
