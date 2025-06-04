@@ -89,7 +89,7 @@ export type SpellEffectFunc = (
   ) => void
 ) => void;
 
-export type ShopItemType = "upgrade" | "oneTime";
+export type ShopItemType = "upgrade" | "oneTime" | "consumable";
 
 export interface ShopItemBase {
   id: string;             
@@ -113,4 +113,9 @@ export interface OneTimeItem extends ShopItemBase {
   effect: (player: Player) => Player; 
 }
 
-export type ShopItem = UpgradeItem | OneTimeItem;
+export interface ConsumableItem extends ShopItemBase {
+  type: "consumable";
+  effect: (player: Player) => Player; 
+}
+
+export type ShopItem = UpgradeItem | OneTimeItem | ConsumableItem;

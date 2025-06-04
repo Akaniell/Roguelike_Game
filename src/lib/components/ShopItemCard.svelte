@@ -13,6 +13,12 @@
 
   $: purchasedText = item.type === "oneTime" && item.purchased ? "Куплено" : "";
 
+  $: isMaxLevelReached =
+    item.type === "upgrade" &&
+    item.currentLevel !== undefined &&
+    item.maxLevel !== undefined &&
+    item.currentLevel >= item.maxLevel;
+
   function onBuyClick() {
     if (item.type === "oneTime" && item.purchased) return;
     dispatch("buy", item.id);
@@ -43,9 +49,9 @@
     <button
       class="buy-button"
       on:click={onBuyClick}
-      disabled={item.type === "oneTime" && item.purchased}
-      aria-disabled={item.type === "oneTime" && item.purchased}
-      title={item.type === "oneTime" && item.purchased
+      disabled={(item.type === "oneTime" && item.purchased) || isMaxLevelReached}
+      aria-disabled={(item.type === "oneTime" && item.purchased) || isMaxLevelReached}
+      title={(item.type === "oneTime" && item.purchased) || isMaxLevelReached
         ? "Уже куплено"
         : "Купить"}
     >

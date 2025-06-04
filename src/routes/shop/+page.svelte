@@ -4,9 +4,6 @@
   import { buyItem } from "$lib/utils/shopUtils";
   import { playerStore } from "$lib/Stores/playerStore";
 
-  let items = $shopStore;
-  let player = $playerStore;
-
   function handleBuy(event: CustomEvent<string>) {
     buyItem(event.detail);
   }
@@ -15,12 +12,12 @@
 <p class="page-title">Магазин</p>
 
 <div class="coins-display">
-  <span class="coins-count">{player.coins}</span>
+  <span class="coins-count">{$playerStore.coins}</span>
   <img src="/img/coin.gif" alt="Монета" class="coin-icon" />
 </div>
 
 <div class="shop-list">
-  {#each items as item (item.id)}
+  {#each $shopStore as item (item.id)}
     <ShopItemCard {item} on:buy={handleBuy} />
   {/each}
 </div>

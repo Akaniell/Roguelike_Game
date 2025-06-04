@@ -14,24 +14,23 @@ export const shopTemplates: ShopItem[] = [
     maxLevel: 10,
     effect: (player: Player) => ({
       ...player,
-      maxHp: Math.min(player.maxHp + 1, 200),
+      maxHp: Math.min(player.maxHp + 10, 200),
       hp: player.hp + 10,
     }),
   },
   {
     id: "heal",
     name: "Лечение",
-    description: "Восстанавливает 20 единиц здоровья на следующем ходу.",
+    description: "Восстанавливает 20 единиц здоровья.",
     price: 1,
-    type: "oneTime",
-    purchased: false,
+    type: "consumable",
     effect: (player: Player) => ({
       ...player,
       hp: Math.min(player.maxHp, player.hp + 20),
     }),
   },
   {
-    id: "newElement",
+    id: "newElement_1",
     name: "Открытие новой стихии",
     description: "Разблокирует случайную новую стихию.",
     price: 1,
@@ -49,7 +48,7 @@ export const shopTemplates: ShopItem[] = [
     },
   },
   {
-    id: "newElement",
+    id: "newElement_2",
     name: "Открытие новой стихии",
     description: "Разблокирует случайную новую стихию.",
     price: 1,

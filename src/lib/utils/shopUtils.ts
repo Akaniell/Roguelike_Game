@@ -4,43 +4,60 @@ import { playerStore } from "$lib/Stores/playerStore";
 import type { Player } from "$lib/Stores/types";
 
 export function buyItem(itemId: string): boolean {
-  const shopItems = get(shopStore);
   const player = get(playerStore);
+  let canBuy = false;
 
-  const itemIndex = shopItems.findIndex((item) => item.id === itemId);
-  if (itemIndex === -1) return false;
+  shopStore.update((items) => {
+    return items.map((item) => {
+      if (item.id !== itemId) return item;
 
-  const item = shopItems[itemIndex];
+      if (player.coins < item.price) {
+        alert("Недостаточно монет");
+        return item;
+      }
 
-  if (player.coins < item.price) {
-    alert("Недостаточно монет");
-    return false;
-  }
+      if (item.type === "oneTime" && item.purchased) {
+        alert("Этот предмет уже куплен");
+        return item;
+      }
 
-  if (item.type === "oneTime" && item.purchased) {
-    alert("Этот предмет уже куплен");
-    return false;
-  }
+      if (
+        item.type === "upgrade" &&
+        item.maxLevel !== undefined &&
+        (item.currentLevel ?? 0) >= item.maxLevel
+      ) {
+        alert("Достигнут максимальный уровень");
+        return item;
+      }
 
-  playerStore.update((p) => ({ ...p, coins: p.coins - item.price }));
+      if (item.type === "consumable") {
+        canBuy = true;
+        return item;
+      }
 
-  playerStore.update((p: Player) => item.effect(p));
+      canBuy = true;
 
-  if (item.type === "oneTime") {
-    shopStore.update((items) => {
-      const newItems = [...items];
-      newItems[itemIndex] = { ...item, purchased: true };
-      return newItems;
+      if (item.type === "oneTime") {
+        return { ...item, purchased: true };
+      } else if (item.type === "upgrade") {
+        const currentLevel = (item.currentLevel ?? 0) + 1;
+        return { ...item, currentLevel };
+      } 
+      return item;
     });
-  } else if (item.type === "upgrade") {
-    if(item.maxLevel && item.currentLevel <= item.maxLevel){
-    shopStore.update((items) => {
-      const newItems = [...items];
-      const currentLevel = (item.currentLevel ?? 0) + 1;
-      newItems[itemIndex] = { ...item, currentLevel };
-      return newItems;
-    });}
-  }
+  });
+
+  if (!canBuy) return false;
+
+  const updatedItem = get(shopStore).find((item) => item.id === itemId);
+  if (!updatedItem) return false;
+
+  playerStore.update((p: Player) => {
+    if (updatedItem.effect) {
+      return updatedItem.effect({ ...p });
+    }
+    return p;
+  });
 
   return true;
 }

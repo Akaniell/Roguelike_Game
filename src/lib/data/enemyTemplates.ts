@@ -50,7 +50,7 @@ export const enemyTemplates: Enemy[] = [
     image: "/img/enemies/skeleton-melee.gif",
     moveStrategy: "straight",
     attackRange: 1,
-    attackDamage: 10,
+    attackDamage: 8,
     story: "Скелеты-воины — крепкие бойцы, сражающиеся в ближнем бою.",
   },
   {
@@ -63,7 +63,7 @@ export const enemyTemplates: Enemy[] = [
     image: "/img/enemies/king-slime.gif",
     moveStrategy: "zigzag",
     attackRange: 2,
-    attackDamage: 20,
+    attackDamage: 15,
     story: "Королевский слайм — лидер слаймов, обладающий мощной силой и интеллектом.",
   },
 ];
