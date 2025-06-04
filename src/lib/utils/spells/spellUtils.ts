@@ -10,6 +10,7 @@ import { applyDamageToCell, applyHealToCell } from "../entityUtils";
 import { currentWaveStore } from "$lib/Stores/gameBoardStore";
 import { placeBuildingOnField } from "../entities/buildingUtils";
 import { hurricaneEffect } from "./hyrricaneEffect";
+import { swampEffect } from "./swampEffect";
 
 type EffectAction = (x: number, y: number, amount: number) => void;
 
@@ -91,4 +92,5 @@ export const spellEffectsMap: Record<string, SpellEffectFunc> = {
   "Исцеляющее касание": healingFlow,
   "Каменная стена": stoneWall,
   "Ураган": hurricaneEffect,
+  "Болото": swampEffect,
 };

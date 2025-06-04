@@ -30,10 +30,10 @@ export const spellCombinations: SpellCombination[] = [
   {
     elements: ["Воздух", "Воздух"],
     spellName: "Ураган",
-    description: "Сильный ветер, отталкивающий врагов и наносящий 3 урона.",
+    description: "Сильный ветер, отталкивающий врагов и наносящий 7 урона.",
     effect: "Отталкивание",
     knockback: 2,
-    damage: 3,
+    damage: 7,
   },
   {
     elements: ["Огонь", "Вода"],
@@ -60,10 +60,11 @@ export const spellCombinations: SpellCombination[] = [
   },
   {
     elements: ["Вода", "Земля"],
-    spellName: "Каменная стена",
-    description: "Возводит каменную стену, блокирующую путь врагам.",
-    summon: "Каменная стена",
-    duration: 20,
+    spellName: "Болото",
+    description:
+      "Создаёт область болота 3×3, наносящую урон всем врагам внутри.",
+    summon: "Область - Болото",
+    damage: 5,
   },
   {
     elements: ["Вода", "Воздух"],
